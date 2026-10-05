@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Infecto Consult — Decisor clínico para artrite séptica de articulação nativa em adultos.">
+<meta name="theme-color" content="#0f766e">
+<title>Infecto Consult — Artrite Séptica</title>
+<style>
+:root{
+  --bg:#f4f7f7;
+  --card:#ffffff;
+  --ink:#172326;
+  --muted:#637276;
+  --line:#dce5e5;
+  --primary:#0f766e;
+  --primary2:#115e59;
+  --soft:#e7f5f3;
+  --danger:#b42318;
+  --dangerbg:#fff0ee;
+  --warn:#a15c00;
+  --warnbg:#fff7e8;
+  --info:#155eef;
+  --infobg:#eef4ff;
+  --success:#087443;
+  --successbg:#ecfdf3;
+  --shadow:0 8px 26px rgba(20,45,48,.07);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.48;
+}
+header{
+  position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.header-inner{max-width:1120px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;color:var(--primary);letter-spacing:.2px;font-size:20px}
+.subtitle{font-size:12px;color:var(--muted);font-weight:600}
+main{max-width:1120px;margin:0 auto;padding:22px 16px 60px}
+.hero{
+  background:linear-gradient(135deg,#0f766e,#115e59);
+  color:#fff;border-radius:20px;padding:24px 22px;margin-bottom:16px;box-shadow:var(--shadow)
+}
+.hero h1{margin:0 0 7px;font-size:27px;line-height:1.15}
+.hero p{margin:0;opacity:.92;font-size:14px}
+.alert{
+  border:1px solid #f3b5ad;background:var(--dangerbg);color:#7a1d14;
+  border-radius:14px;padding:13px 15px;margin:14px 0;font-weight:700
+}
+.disclaimer{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+  color:var(--muted);font-size:12px;margin-bottom:18px
+}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:18px;margin:14px 0
+}
+.card h2{font-size:19px;margin:0 0 13px}
+.card h3{font-size:15px;margin:18px 0 9px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero h1{font-size:23px}}
+.q{
+  border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff
+}
+.q label{display:block;font-weight:750;font-size:14px;margin-bottom:8px}
+.help{font-size:12px;color:var(--muted);margin-top:5px}
+.choice{display:flex;gap:8px;flex-wrap:wrap}
+.choice button,.select,.action{
+  border:1px solid #cbd8d8;background:#fff;color:var(--ink);border-radius:10px;
+  padding:9px 12px;font-weight:700;cursor:pointer;font-size:13px
+}
+.choice button:hover,.select:hover{border-color:var(--primary)}
+.choice button.active{background:var(--soft);border-color:var(--primary);color:var(--primary2)}
+.action{background:var(--primary);color:#fff;border-color:var(--primary)}
+.action:hover{background:var(--primary2)}
+.output{
+  display:none;margin-top:14px;border-radius:14px;padding:14px;border:1px solid var(--line)
+}
+.output.show{display:block}
+.output.danger{background:var(--dangerbg);border-color:#f0c0ba}
+.output.warn{background:var(--warnbg);border-color:#efd5a7}
+.output.info{background:var(--infobg);border-color:#c9d8ff}
+.output.success{background:var(--successbg);border-color:#b7e4c9}
+.output strong{display:block;margin-bottom:5px}
+.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media(max-width:760px){.checklist{grid-template-columns:1fr}}
+.check{
+  display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);
+  padding:10px;border-radius:11px;background:#fff;font-size:13px
+}
+.check input{margin-top:3px;accent-color:var(--primary)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:620px;font-size:13px}
+th,td{padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:#f1f6f6;font-weight:800}
+tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:3px 7px;border-radius:999px;font-size:11px;font-weight:800;background:var(--soft);color:var(--primary2)}
+.step{
+  display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line)
+}
+.step:last-child{border-bottom:0}
+.num{
+  min-width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:13px
+}
+.hidden{display:none!important}
+.small{font-size:12px;color:var(--muted)}
+footer{max-width:1120px;margin:auto;padding:0 16px 40px;color:var(--muted);font-size:12px}
+.ref{margin:7px 0;padding-left:20px;text-indent:-20px}
+.search{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;
+  font-size:14px;outline:none
+}
+.search:focus{border-color:var(--primary)}
+.pill-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.pill{font-size:11px;background:#f0f4f4;border:1px solid var(--line);border-radius:999px;padding:5px 8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="brand">Infecto Consult</div>
+      <div class="subtitle">Decisor clínico</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Artrite séptica — articulação nativa</h1>
+    <p>Roteiro prático para adulto: suspeita → gravidade → artrocentese → diagnóstico → drenagem → antibiótico → monitoramento → reavaliação.</p>
+  </section>
+
+  <div class="alert">
+    ARTRITE SÉPTICA É UMA EMERGÊNCIA OSTEOARTICULAR. Febre ausente, Gram negativo, cristais ou contagem sinovial abaixo de 50.000/µL não excluem isoladamente a doença.
+  </div>
+
+  <div class="disclaimer">
+    Esta é uma ferramenta de apoio à decisão e não substitui protocolo institucional, avaliação clínica ou atualização normativa.
+  </div>
+
+  <section class="card">
+    <h2>1. Suspeita inicial</h2>
+    <div class="grid">
+      <div class="q">
+        <label>Há dor articular aguda importante, derrame, calor ou limitação marcada da mobilidade?</label>
+        <div class="choice" data-group="suspeita" data-output="suspeitaOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+        <div class="help">Dor à mobilização passiva aumenta a suspeita de acometimento intra-articular.</div>
+      </div>
+      <div class="q">
+        <label>Há fatores de risco ou contexto epidemiológico relevante?</label>
+        <div class="choice" data-group="risco" data-output="riscoOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+        <div class="help">Diabetes, DRC, artrite reumatoide, imunossupressão, corticoide, imunobiológicos, bacteremia, infecção cutânea, cirurgia/infiltração, trauma penetrante, uso de drogas IV e exposição sexual são exemplos.</div>
+      </div>
+    </div>
+    <div id="suspeitaOut" class="output"></div>
+    <div id="riscoOut" class="output"></div>
+
+    <h3>O que perguntar</h3>
+    <div class="checklist">
+      <label class="check"><input type="checkbox"> Início e velocidade de evolução da dor</label>
+      <label class="check"><input type="checkbox"> Febre, calafrios ou rigores</label>
+      <label class="check"><input type="checkbox"> Trauma ou ferimento penetrante</label>
+      <label class="check"><input type="checkbox"> Infecção de pele/partes moles</label>
+      <label class="check"><input type="checkbox"> Cirurgia ou artroscopia recente</label>
+      <label class="check"><input type="checkbox"> Infiltração intra-articular recente</label>
+      <label class="check"><input type="checkbox"> Uso de drogas intravenosas</label>
+      <label class="check"><input type="checkbox"> Exposição sexual recente</label>
+      <label class="check"><input type="checkbox"> Mordida humana ou animal</label>
+      <label class="check"><input type="checkbox"> Viagem/exposição epidemiológica</label>
+      <label class="check"><input type="checkbox"> Antibiótico antes da artrocentese</label>
+      <label class="check"><input type="checkbox"> Imunossupressão</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Gravidade: pode aguardar a coleta?</h2>
+    <div class="q">
+      <label>Há sepse ou choque séptico?</label>
+      <div class="choice" data-group="gravidade" data-output="gravidadeOut">
+        <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+      </div>
+    </div>
+    <div id="gravidadeOut" class="output"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. Exame físico dirigido</h2>
+    <div class="checklist">
+      <label class="check"><input type="checkbox"> Derrame articular</label>
+      <label class="check"><input type="checkbox"> Calor/eritema</label>
+      <label class="check"><input type="checkbox"> Dor à mobilização passiva</label>
+      <label class="check"><input type="checkbox"> Limitação importante de amplitude</label>
+      <label class="check"><input type="checkbox"> Fístula ou drenagem purulenta</label>
+      <label class="check"><input type="checkbox"> Lesões cutâneas sugestivas de gonococo</label>
+      <label class="check"><input type="checkbox"> Tenossinovite</label>
+      <label class="check"><input type="checkbox"> Focos infecciosos à distância</label>
+      <label class="check"><input type="checkbox"> Sinais de endocardite</label>
+      <label class="check"><input type="checkbox"> Sinais neurológicos/coluna</label>
+    </div>
+
+    <h3>Articulação</h3>
+    <div class="grid">
+      <div class="q">
+        <label>Qual padrão?</label>
+        <select id="padrao" class="select" style="width:100%">
+          <option value="">Selecione</option>
+          <option>Monoartrite</option>
+          <option>Oligo/poliartrite</option>
+          <option>Monoartrite crônica/subaguda</option>
+        </select>
+      </div>
+      <div class="q">
+        <label>Articulação profunda ou de difícil acesso?</label>
+        <div class="choice" data-group="profunda" data-output="profundaOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+    </div>
+    <div id="profundaOut" class="output"></div>
+  </section>
+
+  <section class="card">
+    <h2>4. Exames iniciais</h2>
+    <div class="q">
+      <label>Selecione os contextos presentes para montar o pacote de investigação.</label>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" class="context" value="hemocultura"> Febre, bacteremia ou sepse</label>
+        <label class="check"><input type="checkbox" class="context" value="imuno"> Imunossupressão</label>
+        <label class="check"><input type="checkbox" class="context" value="cronica"> Curso subagudo/crônico</label>
+        <label class="check"><input type="checkbox" class="context" value="gonococo"> Exposição sexual/tenossinovite/lesões pustulosas</label>
+        <label class="check"><input type="checkbox" class="context" value="preantib"> Antibiótico antes da punção</label>
+        <label class="check"><input type="checkbox" class="context" value="falha"> Falha ou resposta insatisfatória</label>
+      </div>
+      <button class="action" id="montarExames" style="margin-top:12px">Montar exames</button>
+    </div>
+    <div id="examesOut" class="output"></div>
+
+    <h3>Artrocentese — material essencial</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Material/exame</th><th>Objetivo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cultura bacteriana</strong></td><td>Identificação do agente.</td></tr>
+          <tr><td><strong>Contagem global + diferencial/PMN</strong></td><td>Apoio à probabilidade diagnóstica.</td></tr>
+          <tr><td><strong>Cristais</strong></td><td>Gota/pseudogota; sua presença não exclui infecção.</td></tr>
+          <tr><td><strong>Gram</strong></td><td>Orientação inicial; resultado negativo não exclui.</td></tr>
+          <tr><td><strong>Frascos de hemocultura</strong></td><td>Podem aumentar rendimento microbiológico quando apropriado.</td></tr>
+          <tr><td><strong>PCR/método molecular</strong></td><td>Especialmente útil em cultura negativa após antibiótico ou suspeita de patógeno de difícil cultivo.</td></tr>
+          <tr><td><strong>BAAR/cultura para micobactéria</strong></td><td>Se suspeita de TB/NTM.</td></tr>
+          <tr><td><strong>Cultura fúngica</strong></td><td>Se suspeita de infecção fúngica.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>5. Interpretação do líquido sinovial</h2>
+    <div class="grid">
+      <div class="q">
+        <label>Leucócitos no líquido sinovial</label>
+        <select id="wbc" class="select" style="width:100%">
+          <option value="">Selecione</option>
+          <option value="baixo">&lt;25.000/µL</option>
+          <option value="inter">&ge;25.000 e &lt;50.000/µL</option>
+          <option value="alto">&ge;50.000/µL</option>
+          <option value="muitoalto">&gt;100.000/µL</option>
+          <option value="nao">&nbsp;Não disponível</option>
+        </select>
+      </div>
+      <div class="q">
+        <label>Há cristais?</label>
+        <div class="choice" data-group="cristais" data-output="cristaisOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+    </div>
+    <div id="wbcOut" class="output"></div>
+    <div id="cristaisOut" class="output"></div>
+
+    <div class="alert" style="margin-top:14px">
+      Não use um único valor de leucócitos, Gram ou presença de cristais para excluir artrite séptica. Em imunossuprimidos, os pontos de corte podem ser menos confiáveis.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>6. Cultura negativa: o que fazer?</h2>
+    <div class="grid">
+      <div class="q">
+        <label>A cultura foi negativa?</label>
+        <div class="choice" data-group="cultura" data-output="culturaOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+      <div class="q">
+        <label>Houve antibiótico antes da coleta?</label>
+        <div class="choice" data-group="antibpre" data-output="antibpreOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+    </div>
+    <div id="culturaOut" class="output"></div>
+    <div id="antibpreOut" class="output"></div>
+    <div class="small" style="margin-top:10px">
+      Se a suspeita persistir, a diretriz SANJO permite prolongar a cultura até 10–14 dias em situações selecionadas e considerar métodos moleculares, sobretudo após antibiótico prévio ou diante de patógeno de difícil cultivo.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>7. Diagnóstico diferencial orientado</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Hipótese</th><th>Pistas</th><th>Próximo passo</th></tr></thead>
+        <tbody>
+          <tr><td>Gota</td><td>Cristais de urato</td><td>Não excluir infecção; manter cultura.</td></tr>
+          <tr><td>Pseudogota</td><td>Cristais de CPPD</td><td>Não excluir infecção; manter cultura.</td></tr>
+          <tr><td>Artrite reativa</td><td>Infecção GI/GU prévia</td><td>Correlacionar epidemiologia e ausência de evidência de infecção articular.</td></tr>
+          <tr><td>Gonocócica</td><td>Tenossinovite + poliartralgia + lesões cutâneas</td><td>NAAT/culturas dos sítios expostos e investigação disseminada.</td></tr>
+          <tr><td>Bursite séptica</td><td>Achado mais superficial</td><td>Diferenciar pela localização e imagem quando necessário.</td></tr>
+          <tr><td>Osteomielite</td><td>Dor óssea/alteração de imagem</td><td>Imagem, especialmente RM quando indicada.</td></tr>
+          <tr><td>TB</td><td>Monoartrite subaguda/crônica</td><td>BAAR/cultura/PCR e biópsia conforme contexto.</td></tr>
+          <tr><td>NTM</td><td>Curso indolente, procedimento/injeção/trauma</td><td>Cultura específica e biópsia conforme contexto.</td></tr>
+          <tr><td>Fúngica</td><td>Imunossupressão + evolução indolente</td><td>Cultura fúngica e histopatologia.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>8. Drenagem articular</h2>
+    <div class="q">
+      <label>Há diagnóstico provável ou forte suspeita de artrite séptica?</label>
+      <div class="choice" data-group="drenagem" data-output="drenagemOut">
+        <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+      </div>
+    </div>
+    <div id="drenagemOut" class="output"></div>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Situação</th><th>Estratégia</th></tr></thead>
+        <tbody>
+          <tr><td>Grande articulação</td><td>Drenagem/lavagem cirúrgica; artroscopia é adequada em muitos casos.</td></tr>
+          <tr><td>Doença extensa, abscesso ou lesão óssea</td><td>Pode exigir abordagem aberta.</td></tr>
+          <tr><td>Falha clínica</td><td>Reavaliar necessidade de nova drenagem/debridamento.</td></tr>
+          <tr><td>Paciente sem possibilidade cirúrgica</td><td>Aspiração seriada pode ser alternativa selecionada.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="small" style="margin-top:10px">
+      Na ausência de sepse, a SANJO recomenda organizar o procedimento rapidamente e evitar atraso além de 24 horas nas condições especificadas; atrasos superiores a 24–48 horas aumentam o risco de nova drenagem.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>9. Antibiótico empírico</h2>
+    <div class="grid">
+      <div class="q">
+        <label>Qual o contexto microbiológico?</label>
+        <select id="empirico" class="select" style="width:100%">
+          <option value="">Selecione</option>
+          <option value="padrao">Sem contexto especial identificado</option>
+          <option value="mrsa">Risco de MRSA / necessidade de cobertura de S. aureus resistente</option>
+          <option value="gramneg">Gram negativo ou necessidade de cobertura para Gram-negativos</option>
+          <option value="pseudomonas">Risco hospitalar/Pseudomonas</option>
+          <option value="mordida">Mordida humana/animal</option>
+          <option value="gonococo">Suspeita de doença gonocócica disseminada</option>
+        </select>
+      </div>
+      <div class="q">
+        <label>Há sepse/choque?</label>
+        <div class="choice" data-group="antibGrav" data-output="antibGravOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+    </div>
+    <div id="antibGravOut" class="output"></div>
+    <div id="empiricoOut" class="output"></div>
+
+    <h3>Esquemas apresentados no material</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Cenário</th><th>Esquema</th></tr></thead>
+        <tbody>
+          <tr><td>Gram positivo / necessidade de cobertura de MRSA</td><td>Vancomicina.</td></tr>
+          <tr><td>Gram negativo</td><td>Vancomicina + ceftriaxona.</td></tr>
+          <tr><td>Gram negativo + risco hospitalar/MDR/Pseudomonas</td><td>Vancomicina + cefepime.</td></tr>
+          <tr><td>Mordida humana/animal</td><td>Ampicilina-sulbactam ou amoxicilina-clavulanato.</td></tr>
+          <tr><td>Suspeita gonocócica</td><td>Ceftriaxona 1 g IV/IM a cada 24 h; se clamídia não excluída, doxiciclina 100 mg VO 12/12 h por 7 dias.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert" style="margin-top:13px">
+      Coletar hemoculturas e líquido sinovial antes do antibiótico quando o paciente estiver estável. Em sepse/choque, não atrasar o antibiótico para aguardar a coleta.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>10. Doses práticas apresentadas no material</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Antibiótico</th><th>Dose apresentada</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>Vancomicina</td><td>15–20 mg/kg IV a cada 8–12 h</td><td>Alvo AUC24 400–600.</td></tr>
+          <tr><td>Ceftriaxona</td><td>1 g IV a cada 24 h</td><td>Usada no material para artrite séptica e cenário gonocócico.</td></tr>
+          <tr><td>Cefepime</td><td>2 g IV a cada 8 h</td><td>Para cenário com risco hospitalar/Pseudomonas, conforme material.</td></tr>
+          <tr><td>Ciprofloxacino</td><td>400 mg IV a cada 12 h</td><td>Alternativa apresentada no material em contextos selecionados.</td></tr>
+          <tr><td>Levofloxacino</td><td>750 mg IV a cada 24 h</td><td>Alternativa apresentada no material.</td></tr>
+          <tr><td>Linezolida</td><td>600 mg VO/IV a cada 12 h</td><td>Opção apresentada para agentes Gram-positivos selecionados.</td></tr>
+          <tr><td>Daptomicina</td><td>10 mg/kg IV a cada 24 h</td><td>Opção apresentada para MRSA/VRE em contextos selecionados.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="small" style="margin-top:10px">Ajustar conforme função renal, peso, gravidade, sensibilidade, MIC e protocolo institucional.</div>
+  </section>
+
+  <section class="card">
+    <h2>11. Tratamento dirigido</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Agente</th><th>Preferência apresentada</th></tr></thead>
+        <tbody>
+          <tr><td>MSSA</td><td>Cefazolina / oxacilina / nafcilina.</td></tr>
+          <tr><td>MRSA</td><td>Vancomicina ou daptomicina.</td></tr>
+          <tr><td>Streptococcus spp.</td><td>Penicilina G ou ceftriaxona conforme espécie/sensibilidade.</td></tr>
+          <tr><td>Enterococcus</td><td>Ampicilina se sensível.</td></tr>
+          <tr><td>VRE</td><td>Daptomicina ou linezolida.</td></tr>
+          <tr><td>Gram-negativo</td><td>Ceftriaxona/cefepime conforme espécie e sensibilidade.</td></tr>
+          <tr><td>Gonococo</td><td>Ceftriaxona.</td></tr>
+          <tr><td>Anaeróbios</td><td>Metronidazol ou esquema ativo.</td></tr>
+          <tr><td>Fungos</td><td>Tratamento específico por agente.</td></tr>
+          <tr><td>TB</td><td>Tratamento padrão para TB osteoarticular.</td></tr>
+          <tr><td>NTM</td><td>Individualizar; frequentemente associado a debridamento.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>12. Duração e transição IV → VO</h2>
+    <div class="grid">
+      <div class="q">
+        <label>Qual situação melhor descreve o caso?</label>
+        <select id="duracao" class="select" style="width:100%">
+          <option value="">Selecione</option>
+          <option value="bacteriana">Artrite bacteriana não complicada após drenagem adequada</option>
+          <option value="mao">Mão/punho após drenagem adequada</option>
+          <option value="gonococo">Gonocócica</option>
+          <option value="osso">Osteomielite associada</option>
+          <option value="fungo">Fúngica</option>
+          <option value="tb">Tuberculosa</option>
+          <option value="ntm">NTM</option>
+        </select>
+      </div>
+      <div class="q">
+        <label>Paciente está clinicamente melhor e PCR está em queda?</label>
+        <div class="choice" data-group="trocaVO" data-output="trocaVOOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+    </div>
+    <div id="duracaoOut" class="output"></div>
+    <div id="trocaVOOut" class="output"></div>
+    <div class="alert" style="margin-top:12px">
+      O material resume tratamento bacteriano geralmente em 2–6 semanas. A SANJO sugere, após resposta clínica satisfatória, cerca de 1–2 semanas IV seguidas de 2–4 semanas VO. O estudo de 2 versus 4 semanas teve predominância de casos de mão/punho; não extrapolar automaticamente 2 semanas para grandes articulações.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>13. Monitoramento</h2>
+    <div class="checklist">
+      <label class="check"><input type="checkbox"> Temperatura</label>
+      <label class="check"><input type="checkbox"> Dor</label>
+      <label class="check"><input type="checkbox"> Edema/calor</label>
+      <label class="check"><input type="checkbox"> Mobilidade articular</label>
+      <label class="check"><input type="checkbox"> PCR em tendência de queda</label>
+      <label class="check"><input type="checkbox"> Leucograma</label>
+      <label class="check"><input type="checkbox"> Função renal</label>
+      <label class="check"><input type="checkbox"> Toxicidade antimicrobiana</label>
+      <label class="check"><input type="checkbox"> Clearance de hemocultura, quando bacteremia</label>
+      <label class="check"><input type="checkbox"> Cultura/resultado de sensibilidade</label>
+    </div>
+    <div class="output show success" style="margin-top:13px">
+      <strong>Meta clínica</strong>
+      Melhora progressiva da dor e sinais locais, recuperação da função e queda dos marcadores inflamatórios. A PCR é particularmente útil para acompanhamento.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>14. Reavaliação: há falha?</h2>
+    <div class="grid">
+      <div class="q">
+        <label>Persistem ou pioram dor, edema, calor, febre ou disfunção?</label>
+        <div class="choice" data-group="falhaLocal" data-output="falhaLocalOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+      <div class="q">
+        <label>PCR/leucócitos não caem ou líquido permanece muito inflamatório/positivo?</label>
+        <div class="choice" data-group="falhaLab" data-output="falhaLabOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+      </div>
+    </div>
+    <div id="falhaLocalOut" class="output"></div>
+    <div id="falhaLabOut" class="output"></div>
+
+    <h3>Checklist de falha</h3>
+    <div class="checklist">
+      <label class="check"><input type="checkbox"> Drenagem foi adequada?</label>
+      <label class="check"><input type="checkbox"> Há nova coleção?</label>
+      <label class="check"><input type="checkbox"> Há osteomielite?</label>
+      <label class="check"><input type="checkbox"> Antibiótico é ativo contra o agente?</label>
+      <label class="check"><input type="checkbox"> MIC/sensibilidade foram revisados?</label>
+      <label class="check"><input type="checkbox"> É outro patógeno?</label>
+      <label class="check"><input type="checkbox"> Há endocardite?</label>
+      <label class="check"><input type="checkbox"> Considerar fungo/TB/NTM?</label>
+      <label class="check"><input type="checkbox"> É necessária nova amostra?</label>
+      <label class="check"><input type="checkbox"> É necessária nova drenagem/debridamento?</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>15. Ramos especiais</h2>
+    <div class="grid">
+      <div class="q">
+        <label>Imunossuprimido?</label>
+        <div class="choice" data-group="imuno2" data-output="imunoOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+        <div id="imunoOut" class="output"></div>
+      </div>
+      <div class="q">
+        <label>Suspeita de doença gonocócica disseminada?</label>
+        <div class="choice" data-group="gon2" data-output="gonOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+        <div id="gonOut" class="output"></div>
+      </div>
+      <div class="q">
+        <label>Monoartrite crônica/subaguda com culturas bacterianas negativas?</label>
+        <div class="choice" data-group="cron2" data-output="cronOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+        <div id="cronOut" class="output"></div>
+      </div>
+      <div class="q">
+        <label>Bacteremia, especialmente por S. aureus, ou múltiplos focos?</label>
+        <div class="choice" data-group="endo2" data-output="endoOut">
+          <button data-value="sim">SIM</button><button data-value="nao">NÃO</button>
+        </div>
+        <div id="endoOut" class="output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>16. Conduta final em sequência</h2>
+    <div class="step"><div class="num">1</div><div><strong>Reconheça a suspeita</strong><br>Monoartrite/oligoartrite aguda com dor, derrame e limitação importante exige investigação para artrite séptica.</div></div>
+    <div class="step"><div class="num">2</div><div><strong>Defina gravidade</strong><br>Se sepse/choque, colher culturas rapidamente quando possível e iniciar antibiótico sem atraso.</div></div>
+    <div class="step"><div class="num">3</div><div><strong>Faça artrocentese</strong><br>Cultura, celularidade/PMN, cristais e Gram; acrescentar estudos específicos conforme contexto.</div></div>
+    <div class="step"><div class="num">4</div><div><strong>Acione drenagem</strong><br>Diagnóstico provável exige controle de foco; escolher aspiração, artroscopia ou cirurgia aberta conforme articulação e extensão.</div></div>
+    <div class="step"><div class="num">5</div><div><strong>Inicie antibiótico empírico</strong><br>Após coleta em paciente estável; em sepse/choque, não atrasar.</div></div>
+    <div class="step"><div class="num">6</div><div><strong>Direcione pelo agente</strong><br>Descalonar conforme identificação e sensibilidade.</div></div>
+    <div class="step"><div class="num">7</div><div><strong>Monitore</strong><br>Clínica, PCR, leucograma, função renal e clearance de bacteremia quando aplicável.</div></div>
+    <div class="step"><div class="num">8</div><div><strong>Reavalie falha</strong><br>Persistência de dor, febre, sinais locais ou PCR sem queda exige nova investigação de foco, imagem, microbiologia e possível nova drenagem.</div></div>
+  </section>
+
+  <section class="card">
+    <h2>17. Casos rápidos</h2>
+    <div class="q">
+      <label>Caso A — cristais presentes e 70.000 leucócitos/µL</label>
+      <div class="choice" data-group="casoA" data-output="casoAOut">
+        <button data-value="infeccao">Manter investigação para infecção</button>
+        <button data-value="gota">Encerrar como gota</button>
+      </div>
+      <div id="casoAOut" class="output"></div>
+    </div>
+    <div class="q" style="margin-top:12px">
+      <label>Caso B — cultura negativa após 48 h de antibiótico</label>
+      <div class="choice" data-group="casoB" data-output="casoBOut">
+        <button data-value="continuar">Continuar investigação se a suspeita persistir</button>
+        <button data-value="parar">Encerrar diagnóstico</button>
+      </div>
+      <div id="casoBOut" class="output"></div>
+    </div>
+    <div class="q" style="margin-top:12px">
+      <label>Caso C — poliartralgia migratória + tenossinovite + lesões pustulosas</label>
+      <div class="choice" data-group="casoC" data-output="casoCOut">
+        <button data-value="gon">Investigar gonococo disseminado</button>
+        <button data-value="nao">Não considerar gonococo</button>
+      </div>
+      <div id="casoCOut" class="output"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>18. Referências essenciais</h2>
+    <div class="ref">1. Ravn C, Neyt J, Benito N, et al. Guideline for management of septic arthritis in native joints (SANJO). <strong>J Bone Jt Infect.</strong> 2023;8(1):29-37.</div>
+    <div class="ref">2. Estipona B, et al. Native Joint Septic Arthritis. <strong>Infect Dis Clin North Am.</strong> 2025;39:449-463.</div>
+    <div class="ref">3. Mathews CJ, Weston VC, Jones A, et al. Bacterial septic arthritis in adults. <strong>Lancet.</strong> 2010;375(9717):846-855.</div>
+    <div class="ref">4. Abram SGF, Alvand A, Judge A, et al. Mortality and adverse joint outcomes following septic arthritis of the native knee. <strong>Lancet Infect Dis.</strong> 2020;20(3):341-349.</div>
+    <div class="ref">5. Gjika E, Beaulieu JY, Vakalopoulos K, et al. Two weeks versus four weeks of antibiotic therapy after surgical drainage for native joint bacterial arthritis. <strong>Ann Rheum Dis.</strong> 2019;78(8):1114-1121.</div>
+    <div class="ref">6. Turner EHG, Lang MDH, Spiker AM. A narrative review of the last decade's literature on the diagnostic accuracy of septic arthritis of the native joint. <strong>J Exp Orthop.</strong> 2021;8(1):3.</div>
+    <div class="ref">7. Puzzitiello RN, Lipson SE, Michaud RG, et al. Effect of antibiotic administration before joint aspiration on synovial fluid white blood cell count in native joint septic arthritis. <strong>Open Forum Infect Dis.</strong> 2024;11(1):ofad600.</div>
+    <div class="ref">8. Nudelman BM, Piple AS, Ferkel RD. Arthroscopy is at least as effective as arthrotomy for treatment of septic arthritis in adults. <strong>Am J Sports Med.</strong> 2025.</div>
+    <div class="ref">9. Ross JJ. Septic arthritis of native joints. <strong>Infect Dis Clin North Am.</strong> 2017;31(2):203-218.</div>
+    <div class="ref">10. Wu KA, Kugelman DN, Seidelman JL, et al. Native joint septic arthritis. <strong>Antibiotics (Basel).</strong> 2024;13(7):596.</div>
+    <div class="small" style="margin-top:12px">Conteúdo estruturado a partir do material fornecido e da resposta de referência. Quando a fonte não detalha uma conduta específica, ela não é ampliada neste decisor.</div>
+  </section>
+</main>
+
+<footer>
+  Infecto Consult — Decisor clínico. Conteúdo para apoio à decisão profissional.
+</footer>
+
+<script>
+(function(){
+  const outputs = {
+    suspeitaOut:{
+      sim:['danger','Suspeita elevada','Proceda à avaliação dirigida e à artrocentese o mais rapidamente possível.'],
+      nao:['info','Suspeita menor','Reavalie diagnósticos diferenciais e mantenha baixo limiar para artrocentese se a evolução ou os achados clínicos forem compatíveis.']
+    },
+    riscoOut:{
+      sim:['warn','Fator de risco presente','Amplie a história epidemiológica e ajuste a investigação microbiológica ao contexto.'],
+      nao:['info','Sem fator de risco identificado','A ausência de fator de risco não exclui artrite séptica.']
+    },
+    gravidadeOut:{
+      sim:['danger','Não atrasar tratamento','Se sepse/choque, obtenha hemoculturas e líquido sinovial rapidamente quando possível, mas inicie antibiótico sem aguardar o procedimento.'],
+      nao:['success','Coleta antes do antibiótico','Em paciente estável, obtenha hemoculturas e líquido sinovial antes do antibiótico. Organize drenagem rapidamente.']
+    },
+    profundaOut:{
+      sim:['warn','Imagem pode ser necessária','US pode identificar derrame e guiar punção. Para articulações profundas ou suspeita de extensão, considere TC/RM conforme o cenário.'],
+      nao:['info','Punção conforme acessibilidade','Realize artrocentese diagnóstica quando houver suspeita.']
+    },
+    cristaisOut:{
+      sim:['danger','Cristais não excluem infecção','Mantenha cultura e demais estudos. A presença de cristais pode coexistir com artrite séptica.'],
+      nao:['info','Sem cristais','Interprete em conjunto com celularidade, Gram, cultura e contexto clínico.']
+    },
+    culturaOut:{
+      sim:['warn','Cultura negativa não encerra o caso','Revise antibiótico prévio, qualidade da amostra e epidemiologia. Considere PCR, culturas prolongadas e investigação de TB/NTM/fungos quando indicadas.'],
+      nao:['success','Cultura ainda não negativa','Aguarde identificação e sensibilidade para direcionar o tratamento.']
+    },
+    antibpreOut:{
+      sim:['warn','Rendimento microbiológico pode estar reduzido','A interpretação de cultura negativa deve considerar o antibiótico prévio. Se a suspeita persistir, considere método molecular ou nova amostra conforme o contexto.'],
+      nao:['success','Melhor condição microbiológica','Mantenha coleta adequada antes do antibiótico sempre que o paciente estiver estável.']
+    },
+    drenagemOut:{
+      sim:['danger','Controle de foco é parte do tratamento','Acione ortopedia para drenagem. Artroscopia é adequada em muitos casos; doença extensa, abscesso ou lesão óssea pode exigir abordagem aberta.'],
+      nao:['info','Reavaliar probabilidade','Se a suspeita for baixa, mantenha diagnóstico diferencial e use a evolução para definir necessidade de nova investigação.']
+    },
+    antibGravOut:{
+      sim:['danger','Antibiótico imediato após coleta rápida','Sepse/choque não deve esperar procedimento.'],
+      nao:['success','Coleta antes do antibiótico','Em paciente estável, colete líquido sinovial e hemoculturas antes da terapia.']
+    },
+    trocaVOOut:{
+      sim:['success','Pode avaliar transição IV → VO','A SANJO sugere transição após melhora clínica e dos marcadores inflamatórios, desde que haja opção oral adequada.'],
+      nao:['warn','Não trocar apenas pelo tempo','Persistência de sinais clínicos ou marcadores sem melhora exige reavaliação de foco e tratamento.']
+    },
+    falhaLocalOut:{
+      sim:['danger','Investigar falha de controle de foco','Reavalie drenagem, coleção, osteomielite, adequação antimicrobiana e necessidade de nova abordagem.'],
+      nao:['success','Sem sinal local de falha','Continue monitoramento clínico e laboratorial.']
+    },
+    falhaLabOut:{
+      sim:['danger','Marcadores sem melhora exigem reavaliação','Procure persistência da infecção, coleção, osteomielite, agente inadequadamente coberto ou diagnóstico alternativo.'],
+      nao:['success','Resposta laboratorial favorável','Continue tratamento e monitoramento.']
+    },
+    imunoOut:{
+      sim:['warn','Amplie o espectro diagnóstico','Além de bactérias usuais, considere Gram-negativos, Pseudomonas, fungos, TB e NTM conforme contexto e exposição.'],
+      nao:['info','Sem imunossupressão identificada','Mantenha investigação dirigida pelo quadro clínico e epidemiologia.']
+    },
+    gonOut:{
+      sim:['warn','Ramo gonocócico','Solicite NAAT e culturas dos sítios expostos, além de investigação disseminada. Ceftriaxona 1 g IV/IM a cada 24 h; se clamídia não excluída, doxiciclina 100 mg VO 12/12 h por 7 dias.'],
+      nao:['info','Sem padrão gonocócico identificado','Mantenha o fluxo geral.']
+    },
+    cronOut:{
+      sim:['warn','Pensar em TB, NTM e fungos','Considere RM, biópsia sinovial, histopatologia, BAAR/cultura/PCR e cultura fúngica conforme epidemiologia.'],
+      nao:['info','Curso não crônico','Siga o fluxo de artrite bacteriana aguda.']
+    },
+    endoOut:{
+      sim:['warn','Investigar foco metastático/endocardite conforme contexto','Bacteremia persistente, especialmente por S. aureus, ou múltiplos focos justificam investigação ampliada.'],
+      nao:['info','Sem sinal específico de endocardite','Mantenha busca de foco conforme evolução.']
+    },
+    casoAOut:{
+      infeccao:['danger','Resposta correta','Cristais não excluem artrite séptica. Cultura continua indicada.'],
+      gota:['danger','Resposta inadequada','A presença de cristais não exclui infecção concomitante.']
+    },
+    casoBOut:{
+      continuar:['success','Resposta correta','Antibiótico prévio reduz o rendimento microbiológico; cultura negativa não encerra a investigação se a suspeita persistir.'],
+      parar:['danger','Resposta inadequada','Reavalie cultura, antibiótico prévio e necessidade de métodos adicionais.']
+    },
+    casoCOut:{
+      gon:['success','Resposta correta','O padrão é compatível com doença gonocócica disseminada; investigar sítios mucosos e disseminação.'],
+      nao:['danger','Resposta inadequada','Tenossinovite + poliartralgia + lesões cutâneas é um padrão de alerta para gonococo disseminado.']
+    }
+  };
+
+  function render(id, data){
+    const el=document.getElementById(id);
+    if(!el || !data) return;
+    el.className='output show '+data[0];
+    el.innerHTML='<strong>'+data[1]+'</strong>'+data[2];
+  }
+
+  document.querySelectorAll('.choice').forEach(group=>{
+    group.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        group.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const out=group.dataset.output;
+        const val=btn.dataset.value;
+        if(outputs[out]) render(out,outputs[out][val]);
+      });
+    });
+  });
+
+  document.getElementById('wbc').addEventListener('change',function(){
+    const out=document.getElementById('wbcOut');
+    const v=this.value;
+    let data;
+    if(v==='alto') data=['danger','≥50.000/µL','Sugestivo de artrite séptica, mas não confirma isoladamente. Interprete com clínica, Gram, cultura e contexto.'];
+    else if(v==='muitoalto') data=['danger','>100.000/µL','Forte suspeita, mas ainda não é diagnóstico isolado.'];
+    else if(v==='inter') data=['warn','25.000–50.000/µL','Faixa intermediária. Não exclui nem confirma isoladamente.'];
+    else if(v==='baixo') data=['warn','<25.000/µL','Reduz a probabilidade, mas não exclui. Em imunossuprimidos os pontos de corte podem ser menos confiáveis.'];
+    else data=['info','Celularidade não disponível','Priorize a coleta adequada do líquido sinovial quando possível.'];
+    render('wbcOut',data);
+  });
+
+  document.getElementById('montarExames').addEventListener('click',()=>{
+    const selected=[...document.querySelectorAll('.context:checked')].map(x=>x.value);
+    let items=[
+      '<strong>Base para suspeita de artrite séptica</strong>',
+      '• Artrocentese: cultura bacteriana + contagem global/diferencial + cristais + Gram.',
+      '• Hemoculturas quando houver febre, bacteremia ou suspeita de sepse.'
+    ];
+    if(selected.includes('imuno')) items.push('• Imunossupressão: ampliar investigação para Gram-negativos, fungos, TB/NTM conforme contexto.');
+    if(selected.includes('cronica')) items.push('• Curso subagudo/crônico: considerar BAAR/cultura/PCR, cultura fúngica e biópsia sinovial conforme suspeita.');
+    if(selected.includes('gonococo')) items.push('• Suspeita gonocócica: NAAT e culturas de todos os sítios expostos; investigar disseminação.');
+    if(selected.includes('preantib')) items.push('• Antibiótico prévio: cultura pode ter rendimento reduzido; considerar método molecular se suspeita persistir.');
+    if(selected.includes('falha')) items.push('• Falha: reavaliar foco, imagem para coleção/osteomielite, nova amostra e necessidade de nova drenagem.');
+    render('examesOut',['info','Pacote sugerido',items.join('<br>')]);
+  });
+
+  document.getElementById('empirico').addEventListener('change',function(){
+    const map={
+      padrao:['info','Cobertura empírica','Cobrir S. aureus e estreptococos; ampliar para Gram-negativos conforme risco clínico/epidemiológico.'],
+      mrsa:['warn','Cobertura de MRSA','Vancomicina; daptomicina é opção apresentada para situações selecionadas.'],
+      gramneg:['warn','Gram-negativo','Vancomicina + ceftriaxona no material; ajustar após microbiologia.'],
+      pseudomonas:['warn','Risco hospitalar/Pseudomonas','Vancomicina + cefepime no material.'],
+      mordida:['warn','Mordida','Ampicilina-sulbactam ou amoxicilina-clavulanato.'],
+      gonococo:['success','Gonococo','Ceftriaxona 1 g IV/IM a cada 24 h; se clamídia não excluída, doxiciclina 100 mg VO 12/12 h por 7 dias.']
+    };
+    render('empiricoOut',map[this.value]);
+  });
+
+  document.getElementById('duracao').addEventListener('change',function(){
+    const map={
+      bacteriana:['info','Bacteriana não complicada','Material: geralmente 2–6 semanas. SANJO: cerca de 1–2 semanas IV seguidas de 2–4 semanas VO após resposta satisfatória.'],
+      mao:['success','Mão/punho','2 semanas podem ser suficientes em casos selecionados após drenagem adequada; a evidência do ensaio foi predominantemente de mão/punho.'],
+      gonococo:['success','Gonocócica','Geralmente 7–14 dias conforme material; ajustar ao quadro clínico e resposta.'],
+      osso:['warn','Osteomielite associada','A duração deve ser individualizada e prolongada conforme o tratamento da osteomielite.'],
+      fungo:['warn','Fúngica','Tratamento prolongado, específico para o agente.'],
+      tb:['warn','Tuberculosa','Tratamento prolongado conforme protocolo de TB osteoarticular.'],
+      ntm:['warn','NTM','Tratamento prolongado e individualizado, frequentemente com abordagem cirúrgica.']
+    };
+    render('duracaoOut',map[this.value]);
+  });
+})();
+</script>
+</body>
+</html>

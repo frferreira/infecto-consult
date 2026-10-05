@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123B5D">
+<title>Infecto Consult Premium — Infecção pós-craniotomia</title>
+<style>
+:root{
+  --navy:#123B5D; --blue:#1E6FA8; --light:#EEF6FB; --red:#C62828;
+  --green:#247A4B; --amber:#A96800; --gray:#5D6B78; --line:#D8E1E8;
+  --white:#fff; --bg:#F5F8FA;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:#17212B;line-height:1.4}
+.app{max-width:820px;margin:auto;background:#fff;min-height:100vh}
+header{background:linear-gradient(135deg,#0E3554,#1C668F);color:#fff;padding:18px 18px 16px}
+header .eyebrow{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;opacity:.9}
+header h1{font-size:25px;line-height:1.1;margin:5px 0}
+header p{margin:6px 0 0;font-size:13px;opacity:.94}
+.warning{margin:12px 14px;padding:11px 12px;border-left:4px solid var(--amber);background:#FFF8E8;border-radius:8px;font-size:12px}
+.progress{padding:0 14px 12px;display:flex;gap:5px;overflow:auto}
+.dot{height:7px;min-width:42px;background:#DCE5EA;border-radius:20px}.dot.active{background:var(--blue)}
+main{padding:0 14px 90px}
+.card{border:1px solid var(--line);border-radius:13px;margin:12px 0;padding:15px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card h2{font-size:18px;color:var(--navy);margin:0 0 10px}
+.card h3{font-size:15px;color:var(--navy);margin:15px 0 8px}
+.question{font-weight:700;font-size:17px;margin-bottom:10px}
+.btns{display:grid;gap:8px}
+button{border:0;border-radius:10px;padding:12px 13px;font-size:15px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
+button.secondary{background:#EDF3F7;color:var(--navy);border:1px solid #CBD9E3}
+button.danger{background:var(--red)}
+button.green{background:var(--green)}
+button.amber{background:var(--amber)}
+button:active{transform:translateY(1px)}
+.hidden{display:none!important}
+.alert{padding:12px;border-radius:10px;margin:9px 0;font-weight:700}
+.alert.red{background:#FDECEC;color:#8E1E1E;border:1px solid #F5B8B8}
+.alert.green{background:#EAF7EF;color:#176337;border:1px solid #BCE2C8}
+.alert.blue{background:#EDF6FC;color:#164D73;border:1px solid #B9D8EB}
+.alert.amber{background:#FFF6E3;color:#7B4C00;border:1px solid #F0D18B}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th,td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:#F1F6F9;color:var(--navy)}
+.badge{display:inline-block;padding:4px 7px;border-radius:20px;font-size:11px;font-weight:700;margin:2px}
+.redb{background:#FCE8E8;color:#9B2222}.greenb{background:#E6F5EC;color:#176337}.blueb{background:#E7F2FA;color:#18557D}.amberb{background:#FFF2D4;color:#765000}
+ul{padding-left:20px;margin:7px 0}.tight li{margin:4px 0}
+.small{font-size:12px;color:var(--gray)}
+.big{font-size:22px;font-weight:800;color:var(--navy)}
+.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kpi>div{background:#F5F8FA;border:1px solid var(--line);border-radius:10px;padding:10px}
+.footerbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:9px;display:flex;gap:8px;justify-content:center;z-index:10}
+.footerbar button{max-width:380px;width:100%}
+.check label{display:block;padding:9px;border:1px solid var(--line);border-radius:8px;margin:6px 0;font-size:14px}
+input[type=checkbox]{margin-right:8px}
+select{width:100%;padding:11px;border:1px solid #C9D6DF;border-radius:9px;font-size:15px;background:#fff}
+hr{border:0;border-top:1px solid var(--line);margin:15px 0}
+@media(min-width:700px){.btns.two{grid-template-columns:1fr 1fr}.kpi{grid-template-columns:repeat(4,1fr)}main{padding-left:20px;padding-right:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="eyebrow">Infecto Consult Premium · Miniapp decisor clínico</div>
+  <h1>🧠 Infecção pós-craniotomia e ferida neurocirúrgica</h1>
+  <p>Decisão prática à beira-leito: reconhecer → localizar a profundidade → investigar → controlar foco → tratar → reavaliar.</p>
+</header>
+
+<div class="warning">
+<b>⚠️ Ferramenta de apoio à decisão.</b> Esta é uma ferramenta de apoio à decisão e não substitui protocolo institucional, avaliação clínica ou atualização normativa.
+</div>
+
+<div class="progress" id="progress"></div>
+<main id="content"></main>
+
+<div class="footerbar">
+  <button class="secondary" onclick="restart()">↺ Reiniciar decisor</button>
+</div>
+</div>
+
+<script>
+const state = {
+  unstable:null, neuro:null, wound:null, deep:null, collection:null, bone:null, device:null,
+  meningitis:null, ventriculitis:null, riskMDR:null, surgery:null, organism:null, site:null
+};
+
+const steps = [
+  {id:"start", title:"Triagem imediata"},
+  {id:"severity", title:"Gravidade"},
+  {id:"imaging", title:"Imagem"},
+  {id:"layers", title:"Camadas"},
+  {id:"source", title:"Controle de foco"},
+  {id:"abx", title:"Antibiótico"},
+  {id:"culture", title:"Cultura"},
+  {id:"duration", title:"Duração"},
+  {id:"monitor", title:"Reavaliação"}
+];
+
+let current=0;
+
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function renderProgress(){
+  document.getElementById("progress").innerHTML=steps.map((s,i)=>`<div class="dot ${i<=current?'active':''}" title="${s.title}"></div>`).join('');
+}
+function shell(title,body){
+  document.getElementById("content").innerHTML=`<div class="card"><h2>${title}</h2>${body}</div>`;
+  renderProgress();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function btn(text,fn,cls=""){return `<button class="${cls}" onclick="${fn}">${text}</button>`}
+
+function start(){
+ current=0;
+ shell("🚨 1. Comece pela pergunta certa",`
+ <div class="question">Paciente pós-craniotomia com febre, secreção, deiscência, PCR em ascensão ou piora neurológica?</div>
+ <div class="alert blue">Não trate “infecção de ferida” como um diagnóstico único. A primeira decisão é definir gravidade e profundidade.</div>
+ <h3>Na primeira avaliação, procure:</h3>
+ <div class="kpi">
+   <div><b>Ferida</b><br><span class="small">eritema, secreção, deiscência, exposição</span></div>
+   <div><b>Neurológico</b><br><span class="small">consciência, déficit, crise, meningismo</span></div>
+   <div><b>Sepse</b><br><span class="small">PA, FC, perfusão, lactato, órgãos</span></div>
+   <div><b>Dispositivos</b><br><span class="small">DVE, shunt, cateter, material</span></div>
+ </div>
+ <div class="btns two" style="margin-top:12px">
+   ${btn("⚠️ Há instabilidade ou piora neurológica", "goSeverity(true)", "danger")}
+   ${btn("Paciente estável", "goSeverity(false)", "green")}
+ </div>`);
+}
+
+function goSeverity(unstable){
+ state.unstable=unstable; current=1;
+ shell("🚨 2. Gravidade e necessidade de ação imediata",`
+ <div class="alert ${unstable?'red':'blue'}">${unstable?'Paciente de alto risco: não atrasar imagem, culturas, antibiótico e avaliação neurocirúrgica.':'Sem instabilidade declarada: ainda é obrigatório procurar infecção profunda por camadas.'}</div>
+ <h3>Red flags neurológicos</h3>
+ <div class="check">
+   <label><input type="checkbox" id="neuro1"> Rebaixamento do nível de consciência</label>
+   <label><input type="checkbox" id="neuro2"> Crise convulsiva</label>
+   <label><input type="checkbox" id="neuro3"> Déficit neurológico novo</label>
+   <label><input type="checkbox" id="neuro4"> Meningismo</label>
+ </div>
+ <h3>O que fazer agora</h3>
+ <table><tr><th>Se</th><th>Conduta</th></tr>
+ <tr><td>Instabilidade/sepse ou deterioração neurológica</td><td><b>Imagem urgente + hemoculturas quando possível sem atraso + ATB empírico + neurocirurgia.</b></td></tr>
+ <tr><td>Estável</td><td>Prosseguir com avaliação anatômica por camadas e imagem.</td></tr></table>
+ ${btn("Continuar para imagem →","goImaging()")}`);
+}
+
+function goImaging(){
+ current=2;
+ shell("🖥️ 3. Escolha a imagem",`
+ <div class="question">Qual é a melhor estratégia de imagem neste momento?</div>
+ <table><tr><th>Cenário</th><th>Preferência</th></tr>
+ <tr><td>Precisa de decisão rápida</td><td><b>TC de crânio com contraste</b></td></tr>
+ <tr><td>Paciente estável / maior detalhamento</td><td><b>RM com gadolínio + DWI/FLAIR</b>, se possível</td></tr>
+ <tr><td>Suspeita de abscesso/empiema/ventriculite</td><td><b>RM</b> é especialmente útil</td></tr>
+ </table>
+ <div class="alert amber">Se houver piora neurológica, não atrasar estabilização e avaliação neurocirúrgica aguardando RM.</div>
+ <h3>O que a imagem deve procurar?</h3>
+ <div class="btns two">
+ ${btn("Há coleção / osso / material / fístula / meningite / ventriculite", "goLayers(true)", "danger")}
+ ${btn("Não há achado profundo evidente", "goLayers(false)", "green")}
+ </div>`);
+}
+
+function goLayers(deep){
+ state.deep=deep; current=3;
+ shell("🧩 4. Localize a camada mais profunda",`
+ <div class="question">Qual é a situação predominante?</div>
+ <div class="btns">
+ ${btn("🟢 Provável superficial: ferida, sem coleção profunda", "superficial()", "green")}
+ ${btn("🟠 Profunda: subgaleal/epidural ou pus profundo", "deepSite('profunda')")}
+ ${btn("🔴 Osso/flap: suspeita de osteomielite", "deepSite('osso')")}
+ ${btn("🔴 Subdural / empiema", "deepSite('subdural')", "danger")}
+ ${btn("🔴 Abscesso cerebral", "deepSite('abscesso')", "danger")}
+ ${btn("🔴 Meningite", "deepSite('meningite')", "danger")}
+ ${btn("🔴 Ventriculite / DVE / shunt", "deepSite('ventriculite')", "danger")}
+ </div>`);
+}
+
+function superficial(){
+ state.site="superficial"; current=4;
+ shell("🟢 5. Provável infecção superficial",`
+ <div class="alert green">Sem coleção profunda, osso/material/SNC envolvidos na avaliação atual.</div>
+ <h3>Conduta</h3>
+ <ul class="tight">
+ <li>Inspecionar e documentar extensão da ferida.</li>
+ <li>Cuidado local e avaliação neurocirúrgica se deiscência relevante.</li>
+ <li>Antibiótico curto pode ser considerado conforme quadro clínico.</li>
+ <li>Reavaliar precocemente: piora da ferida, febre persistente, secreção profunda ou alteração neurológica mudam a classificação.</li>
+ </ul>
+ <div class="alert amber"><b>Não encerre o caso aqui</b> se houver piora, coleção ou sinais de infecção profunda.</div>
+ ${btn("Ir para monitoramento →","goMonitor()")}`);
+}
+
+function deepSite(site){
+ state.site=site; current=4;
+ const labels={profunda:"Infecção profunda",osso:"Osteomielite de calota/flap",subdural:"Empiema subdural",abscesso:"Abscesso cerebral",meningite:"Meningite",ventriculite:"Ventriculite / infecção de dispositivo"};
+ const siteLabel=labels[site];
+ shell("🔴 5. Infecção profunda — " + siteLabel,`
+ <div class="alert red"><b>Acione neurocirurgia.</b> A definição de profundidade muda o tratamento, necessidade de controle de foco e duração.</div>
+ <h3>Antes ou durante o controle de foco</h3>
+ <div class="check">
+   <label><input type="checkbox"> Hemoculturas se febre/sepse</label>
+   <label><input type="checkbox"> Cultura de tecido/pus profundo</label>
+   <label><input type="checkbox"> Cultura de osso/material quando removido</label>
+   <label><input type="checkbox"> Avaliar LCR quando houver suspeita de meningite/ventriculite e for seguro</label>
+ </div>
+ <h3>Controle de foco</h3>
+ <ul class="tight">
+ <li>Drenagem/aspiração de coleção quando indicada.</li>
+ <li>Desbridamento de tecido desvitalizado.</li>
+ <li>Avaliar remoção do flap ósseo infectado.</li>
+ <li>Avaliar retirada/troca de material ou DVE/shunt envolvidos.</li>
+ <li>Corrigir fístula liquórica quando presente.</li>
+ </ul>
+ ${btn("Definir antibiótico empírico →","goAbx()")}`);
+}
+
+function goAbx(){
+ current=5;
+ const severe = state.unstable;
+ shell("💊 6. Antibiótico empírico",`
+ <div class="question">Há infecção profunda ou quadro grave?</div>
+ <div class="btns two">
+   ${btn("Sim", "setAbxRisk(true)", "danger")}
+   ${btn("Não / superficial", "setAbxRisk(false)", "green")}
+ </div>
+ <div id="abxRisk" style="margin-top:12px"></div>`);
+}
+function setAbxRisk(high){
+ state.riskMDR=high; 
+ const el=document.getElementById("abxRisk");
+ if(!high){
+   el.innerHTML=`<div class="alert green">Para infecção superficial sem sinais de profundidade, evitar automaticamente amplo espectro. Individualizar pelo aspecto da ferida, cultura quando indicada e protocolo institucional.</div>
+   ${btn("Continuar →","goCulture()")}`;
+ }else{
+   el.innerHTML=`<div class="alert red"><b>Esquema empírico sugerido:</b></div>
+   <table>
+   <tr><th>Cenário</th><th>Opção</th></tr>
+   <tr><td>Infecção profunda / grave</td><td><b>Vancomicina + cefepime</b></td></tr>
+   <tr><td>UTI, MDR/ESBL, choque ou forte risco de Gram-negativo resistente</td><td><b>Vancomicina + meropenem</b></td></tr>
+   </table>
+   <div class="small">Doses usuais da página: vancomicina 15–20 mg/kg IV 8–12/12 h; cefepime 2 g IV 8/8 h; meropenem 2 g IV 8/8 h quando tratamento de meningite/ventriculite. Ajustar função renal e seguir protocolo institucional de monitorização.</div>
+   ${btn("Continuar →","goCulture()")}`;
+ }
+}
+
+function goCulture(){
+ current=6;
+ shell("🧫 7. Cultura e descalonamento",`
+ <div class="question">Você já obteve material microbiológico adequado?</div>
+ <div class="btns two">
+ ${btn("Sim — cultura profunda/hemocultura/LCR quando indicado","cultureYes()","green")}
+ ${btn("Não","cultureNo()","amber")}
+ </div>`);
+}
+function cultureNo(){
+ document.getElementById("content").insertAdjacentHTML("beforeend",`
+ <div class="card"><div class="alert amber"><b>Não baseie o tratamento definitivo em swab superficial isolado.</b> Se houver cirurgia/drenagem, priorize tecido/pus profundo e cultura do osso/material quando apropriado.</div>
+ ${btn("Continuar →","cultureYes()")}</div>`);
+}
+function cultureYes(){
+ current=7;
+ shell("🎯 8. Ajuste dirigido e duração",`
+ <h3>Quando sair o resultado</h3>
+ <ul class="tight">
+ <li>Ajustar para o agente e antibiograma.</li>
+ <li>Descalonar sempre que possível.</li>
+ <li>Reavaliar se cultura positiva for de agente que pode representar colonização/contaminação, especialmente em amostras superficiais.</li>
+ </ul>
+ <h3>Duração — use a camada mais profunda</h3>
+ <table>
+ <tr><th>Camada</th><th>Faixa prática da página</th></tr>
+ <tr><td>Superficial</td><td><b>5–14 dias</b></td></tr>
+ <tr><td>Profunda, completamente desbridada</td><td><b>2–4 semanas</b></td></tr>
+ <tr><td>Epidural / coleção drenada</td><td><b>4–6 semanas</b></td></tr>
+ <tr><td>Empiema subdural / abscesso cerebral</td><td><b>≥6 semanas</b></td></tr>
+ <tr><td>Osteomielite de calota</td><td><b>geralmente ≥6 semanas</b></td></tr>
+ <tr><td>Meningite/ventriculite</td><td><b>individualizar</b> por agente, LCR e dispositivo</td></tr>
+ <tr><td>Fungo profundo</td><td><b>4–6+ semanas</b>, conforme foco e agente</td></tr>
+ </table>
+ <div class="alert blue">A duração não é determinada apenas pelo número de dias: considere controle de foco, material residual, agente, imagem, LCR e resposta clínica.</div>
+ ${btn("Ir para monitoramento →","goMonitor()")}`);
+}
+
+function goMonitor(){
+ current=8;
+ shell("📈 9. Monitorar e reavaliar",`
+ <div class="question">Reavalie sistematicamente</div>
+ <div class="kpi">
+ <div><b>Ferida</b><br><span class="small">secreção, deiscência, eritema, cicatrização</span></div>
+ <div><b>Neurológico</b><br><span class="small">consciência, déficit, crise, meningismo</span></div>
+ <div><b>Laboratório</b><br><span class="small">PCR, hemograma, creatinina, função hepática</span></div>
+ <div><b>Microbiologia</b><br><span class="small">culturas/LCR quando indicado</span></div>
+ </div>
+ <h3>Repetir imagem se</h3>
+ <ul class="tight">
+ <li>piora neurológica;</li><li>febre persistente;</li><li>secreção persistente;</li><li>PCR não cai ou volta a subir;</li><li>suspeita de coleção residual;</li><li>caso complexo/abscesso/empiema/osteomielite.</li>
+ </ul>
+ <div class="alert red"><b>Falha terapêutica?</b> Reabra o diagnóstico: controle de foco inadequado, coleção residual, material infectado, resistência, diagnóstico alternativo ou infecção de SNC.</div>
+ <hr>
+ <h3>Checklist final</h3>
+ <div class="check">
+ ${["Defini a camada anatômica mais profunda?","Acionei neurocirurgia quando indicado?","Obtive cultura profunda?","Avaliei osso/material/dispositivo?","A cobertura empírica está adequada ao risco?","Ajustei ao antibiograma?","Defini critério de descalonamento?","Defini duração baseada no foco?","Planejei reavaliação clínica/laboratorial/imagem?"].map((x,i)=>`<label><input type="checkbox" id="c${i}">${x}</label>`).join("")}
+ </div>
+ <div class="alert blue"><b>Ferramenta de apoio à decisão:</b> esta é uma ferramenta de apoio à decisão e não substitui protocolo institucional, avaliação clínica ou atualização normativa.</div>
+ ${btn("↺ Reiniciar decisor","restart()","secondary")}`);
+}
+
+function restart(){ Object.keys(state).forEach(k=>state[k]=null); start(); }
+start();
+</script>
+</body>
+</html>

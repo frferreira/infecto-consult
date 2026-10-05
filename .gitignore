@@ -1,0 +1,7 @@
+# Segredos e ambiente
+.env
+.env.*
+# Página do Notion salva do navegador (scripts de terceiros, ~2,6 MB)
+Entradas/Infecto Consult _ Fluconazol.html
+Entradas/Infecto Consult _ Fluconazol_files/
+node_modules/

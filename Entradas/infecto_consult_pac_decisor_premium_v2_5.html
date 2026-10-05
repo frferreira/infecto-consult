@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123b63">
+<title>Infecto Consult Premium — Decisor PAC</title>
+<style>
+:root{
+  --navy:#123b63; --blue:#1f6fae; --cyan:#eaf5fb; --green:#16835b;
+  --greenbg:#eaf8f1; --red:#b4233c; --redbg:#fff0f2; --amber:#a86400;
+  --amberbg:#fff7e8; --purple:#5b4bb7; --purplebg:#f1efff;
+  --ink:#17212b; --muted:#637282; --line:#dce4ea; --bg:#f5f7f9; --white:#fff;
+  --shadow:0 8px 24px rgba(18,59,99,.08); --radius:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.4}
+.app{max-width:1050px;margin:auto;padding-bottom:50px}
+header{background:linear-gradient(135deg,#123b63,#1d5c8c);color:#fff;padding:18px 18px 16px;position:sticky;top:0;z-index:20;box-shadow:0 4px 16px rgba(0,0,0,.14)}
+.brand{display:flex;align-items:center;gap:12px}.brand .logo{font-size:30px}.brand h1{font-size:20px;margin:0}.brand p{margin:2px 0 0;font-size:12px;opacity:.9}
+.disclaimer{background:#fff7df;color:#694d00;border:1px solid #f0d68b;padding:10px 12px;border-radius:12px;font-size:12px;margin:12px 0}
+.tabs{display:flex;gap:7px;overflow:auto;padding:12px 0 2px}.tabs button{white-space:nowrap;border:1px solid #cfd9e1;background:#fff;color:var(--navy);border-radius:999px;padding:8px 12px;font-weight:700;font-size:12px}
+.tabs button.active{background:var(--navy);color:#fff}
+main{padding:16px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+h2{font-size:21px;margin:0 0 6px;color:var(--navy)} h3{font-size:16px;margin:16px 0 8px;color:var(--navy)}
+.lead{color:var(--muted);margin-top:0}.small{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.app{width:100%}main{padding:10px}}
+label.option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff;cursor:pointer}
+label.option:hover{border-color:#a8bfd0;background:#fbfdff}
+input[type=checkbox],input[type=radio]{margin-top:4px;accent-color:var(--blue)}
+button.primary,button.secondary,button.danger,button.ghost{border:0;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer}
+button.primary{background:var(--navy);color:#fff}.secondary{background:#e8f1f7;color:var(--navy)}.danger{background:var(--red);color:#fff}.ghost{background:#fff;border:1px solid var(--line)!important;color:var(--navy)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.result{padding:15px;border-radius:14px;border:1px solid var(--line);margin-top:14px}.result.good{background:var(--greenbg);border-color:#a7dfc5}.result.warn{background:var(--amberbg);border-color:#f0d294}.result.alert{background:var(--redbg);border-color:#f2b3be}.result.info{background:var(--cyan);border-color:#b7d9eb}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#edf2f6;color:var(--navy);margin-right:5px}
+.badge.red{background:#ffe0e6;color:#9d1830}.badge.green{background:#daf3e6;color:#116344}.badge.amber{background:#fff0c9;color:#7a5200}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{background:#f1f5f8;color:var(--navy)}
+.callout{border-left:5px solid var(--blue);background:#f2f8fc;padding:11px 13px;border-radius:8px;margin:10px 0}
+.alertline{border-left:5px solid var(--red);background:var(--redbg);padding:11px 13px;border-radius:8px;margin:10px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;background:#fff}summary{font-weight:800;color:var(--navy);cursor:pointer}
+.step{display:none}.step.active{display:block}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:10px 0}.kpi div{background:#f7f9fb;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}.kpi b{font-size:22px;color:var(--navy);display:block}
+textarea{width:100%;min-height:100px;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit}
+select,input[type=number]{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit}
+.footer{font-size:11px;color:var(--muted);padding:10px 4px}
+.hidden{display:none!important}
+.stickybar{position:sticky;bottom:10px;z-index:10;background:rgba(255,255,255,.94);border:1px solid var(--line);box-shadow:var(--shadow);padding:10px;border-radius:14px;margin-top:12px}
+ul{margin-top:6px}.tight li{margin:4px 0}
+.flow{display:grid;gap:10px;margin-top:12px}.flow-node{border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;padding:12px;background:#fff}.flow-node strong{color:var(--navy)}
+.flow-arrow{color:var(--muted);font-weight:800;padding-left:14px}.summary-strip{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.section-label{font-size:13px;font-weight:800;color:var(--navy);margin:14px 0 7px}
+.option input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #90c2e7;outline-offset:2px}.option span{display:block}.option small{display:block;color:var(--muted);margin-top:3px}
+@media(max-width:700px){.kpi{grid-template-columns:1fr 1fr}.flow-arrow{padding-left:8px}.stickybar{position:static;display:flex;align-items:center;gap:8px}.stickybar .small{min-width:0}.brand h1{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">🫁</div><div><h1>Infecto Consult Premium — PAC</h1><p>Decisor clínico interativo • adulto imunocompetente • resposta prática</p></div></div>
+</header>
+<main>
+<div class="disclaimer"><b>⚠️ Ferramenta de apoio à decisão:</b> não substitui protocolo institucional, avaliação clínica ou atualização normativa.</div>
+
+<div class="tabs">
+<button class="active" data-tab="decisor">Decisor</button>
+<button data-tab="gravidade">Gravidade</button>
+<button data-tab="prescricao">Prescrição</button>
+<button data-tab="reavaliacao">Reavaliação</button>
+<button data-tab="referencia">Conteúdo completo</button>
+</div>
+
+<section id="decisor" class="tab">
+<div class="card">
+<h2>⚡ PAC em 30 segundos</h2>
+<p class="lead">Use esta sequência no plantão: <b>confirmar → gravidade → local de tratamento → resistência → exames → prescrever → reavaliar.</b></p>
+<div class="callout"><b>Regra prática:</b> sintomas/sinais compatíveis + infiltrado pulmonar novo = PAC provável.</div>
+<div class="grid">
+<label class="option"><input type="checkbox" id="symptoms"> Há sintomas/sinais compatíveis (febre, tosse, expectoração, dispneia, dor pleurítica, taquipneia, hipoxemia etc.)</label>
+<label class="option"><input type="checkbox" id="infiltrate"> Há infiltrado pulmonar novo em RX/US/TC</label>
+</div>
+<div class="actions"><button class="primary" onclick="confirmPAC()">Confirmar PAC provável</button><button class="ghost" onclick="resetAll()">Limpar</button></div>
+<div id="pacResult"></div>
+</div>
+
+<div class="card step" id="severityStep">
+<h2>1. Primeiro: ele está grave?</h2>
+<p class="lead">Procure <b>1 critério maior OU ≥3 critérios menores ATS/IDSA</b>.</p>
+<div class="grid">
+<label class="option"><input type="checkbox" class="major"> Choque séptico necessitando vasopressor</label>
+<label class="option"><input type="checkbox" class="major"> Ventilação mecânica invasiva</label>
+<label class="option"><input type="checkbox" class="minor"> FR &gt;30/min</label>
+<label class="option"><input type="checkbox" class="minor"> PaO₂/FiO₂ &lt;250</label>
+<label class="option"><input type="checkbox" class="minor"> Infiltrado multilobar</label>
+<label class="option"><input type="checkbox" class="minor"> Confusão/desorientação</label>
+<label class="option"><input type="checkbox" class="minor"> Ureia &gt;20 mg/dL</label>
+<label class="option"><input type="checkbox" class="minor"> Leucopenia &lt;4.000/mm³</label>
+<label class="option"><input type="checkbox" class="minor"> Plaquetas &lt;100.000/mm³</label>
+<label class="option"><input type="checkbox" class="minor"> Temperatura &lt;36°C</label>
+<label class="option"><input type="checkbox" class="minor"> Hipotensão necessitando ressuscitação volêmica</label>
+</div>
+<div class="actions"><button class="primary" onclick="calcSeverity()">Classificar gravidade</button></div>
+<div id="severityResult"></div>
+</div>
+
+<div class="card step" id="siteStep">
+<h2>2. Se não grave: onde tratar?</h2>
+<p class="lead">O CURB-65 orienta, mas não substitui oxigenação, comorbidades, suporte domiciliar e tolerância à via oral.</p>
+<div class="grid">
+<div><label>Confusão <select id="curbConf"><option value="0">Não</option><option value="1">Sim</option></select></label></div>
+<div><label>Ureia &gt;19 mg/dL <select id="curbUrea"><option value="0">Não</option><option value="1">Sim</option></select></label></div>
+<div><label>FR &gt;30/min <select id="curbFR"><option value="0">Não</option><option value="1">Sim</option></select></label></div>
+<div><label>PAS &lt;90 ou PAD &lt;60 <select id="curbBP"><option value="0">Não</option><option value="1">Sim</option></select></label></div>
+<div><label>Idade ≥65 anos <select id="curbAge"><option value="0">Não</option><option value="1">Sim</option></select></label></div>
+<div><label><b>Comorbidades relevantes</b><select id="comorb" disabled><option value="0">Automático pelas marcações abaixo</option></select></label></div>
+<div><label>Tolerância VO / suporte domiciliar <select id="home"><option value="1">Adequados</option><option value="0">Inadequados</option></select></label></div>
+</div>
+<div class="section-label">Quais comorbidades? Marque todas as presentes.</div>
+<div class="grid" id="comorbidityList">
+<label class="option"><input type="checkbox" class="comorbidity" value="cardíaca"><span>Doença cardíaca</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="pulmonar"><span>Doença pulmonar crônica</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="renal"><span>Doença renal</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="hepática"><span>Doença hepática</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="diabetes"><span>Diabetes</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="alcoolismo"><span>Alcoolismo</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="neoplasia"><span>Neoplasia</span></label>
+<label class="option"><input type="checkbox" class="comorbidity" value="asplenia"><span>Asplenia</span></label>
+</div>
+<div class="actions"><button class="primary" onclick="calcCURB()">Calcular CURB-65 + contexto</button></div>
+<div id="curbResult"></div>
+</div>
+
+<div class="card step" id="riskStep">
+<h2>3. Risco de resistência e contexto epidemiológico</h2>
+<div class="section-label">Risco validado de MRSA/Pseudomonas</div>
+<div class="grid">
+<label class="option"><input type="checkbox" class="risk" id="riskMRSA"><span>Isolamento respiratório prévio de MRSA</span></label>
+<label class="option"><input type="checkbox" class="risk" id="riskPSA"><span>Isolamento prévio de <i>Pseudomonas</i></span></label>
+<label class="option"><input type="checkbox" class="risk" id="riskRecent"><span>Hospitalização recente + antibiótico parenteral</span></label>
+<label class="option"><input type="checkbox" class="risk" id="riskSevere"><span>PAC grave + fatores associados</span></label>
+</div>
+<div class="section-label">Há indicação epidemiológica específica?</div>
+<div class="grid">
+<label class="option"><input type="checkbox" class="epi-factor" id="epiOutbreak"><span>Surto</span></label>
+<label class="option"><input type="checkbox" class="epi-factor" id="epiTravel"><span>Viagem recente relevante</span></label>
+<label class="option"><input type="checkbox" class="epi-factor" id="epiCompatible"><span>Epidemiologia/exposição compatível</span></label>
+</div>
+<div class="actions"><button class="primary" onclick="calcRisk()">Aplicar fatores marcados</button></div>
+<div id="riskResult"></div>
+</div>
+
+<div class="card step" id="testsStep">
+<h2>4. Exames laboratoriais</h2>
+<p class="lead">Orientação gerada automaticamente pelo cenário definido nas etapas anteriores.</p>
+<div id="testsResult"><div class="result info">Complete gravidade e local de tratamento para exibir os exames correspondentes.</div></div>
+<div class="callout"><b>Procalcitonina:</b> quando utilizada, a queda pode apoiar resposta e descalonamento. <b>Nunca usar isoladamente</b> para decidir início ou suspensão do antibiótico.</div>
+</div>
+
+<div class="card step" id="viralStep">
+<h2>5. Teste viral por antígeno ou biologia molecular</h2>
+<div class="grid">
+<label class="option"><input type="radio" name="viralStatus" value="notdone"><span>Não realizado</span></label>
+<label class="option"><input type="radio" name="viralStatus" value="positive"><span>Positivo</span></label>
+<label class="option"><input type="radio" name="viralStatus" value="negative"><span>Negativo</span></label>
+</div>
+<div id="viralResult"><div class="result info">Selecione o resultado; o decisor combina automaticamente com gravidade, local de tratamento e comorbidades.</div></div>
+</div>
+
+<div class="card step" id="aspStep">
+<h2>6. Aspiração: pneumonite ou pneumonia?</h2>
+<div class="grid">
+<label class="option"><input type="radio" name="asp" value="na"><span>Não se aplica</span></label>
+<label class="option"><input type="radio" name="asp" value="chemical"><span>Aspiração + deterioração imediata</span></label>
+<label class="option"><input type="radio" name="asp" value="pneumonia"><span>Pneumonia após aspiração</span></label>
+<label class="option"><input type="radio" name="asp" value="abscess"><span>Abscesso pulmonar</span></label>
+<label class="option"><input type="radio" name="asp" value="empyema"><span>Empiema</span></label>
+<label class="option"><input type="radio" name="asp" value="isolated"><span>Aspiração isolada sem abscesso/empiema</span></label>
+</div>
+<div id="aspResult"><div class="result info">Selecione uma opção.</div></div>
+</div>
+
+<div class="card step" id="txFlowStep">
+<h2>7. Antibioticoterapia sugerida</h2>
+<p class="lead">Resultado calculado a partir das marcações anteriores.</p>
+<div id="autoTxResult"><div class="result info">Complete gravidade e local de tratamento para exibir o esquema.</div></div>
+<div class="actions"><button class="secondary" onclick="showTab('prescricao')">Ver doses e alternativas</button><button class="ghost" onclick="showTab('reavaliacao')">Ir para reavaliação 48–72 h</button></div>
+</div>
+</section>
+
+<section id="gravidade" class="tab hidden">
+<div class="card">
+<h2>ATS/IDSA + CURB-65</h2>
+<table><thead><tr><th>Ferramenta</th><th>Critérios</th><th>Uso prático</th></tr></thead>
+<tbody>
+<tr><td><b>PAC grave</b></td><td>1 maior OU ≥3 menores</td><td>Avaliar UTI imediatamente; não esperar deterioração.</td></tr>
+<tr><td><b>CURB-65</b></td><td>Confusão, ureia &gt;19, FR &gt;30, PA baixa, idade ≥65</td><td>0–1 geralmente ambulatorial; 2 considerar internação/observação; ≥3 hospitalização e avaliar gravidade/UTI.</td></tr>
+</tbody></table>
+<div class="alertline"><b>Importante:</b> o escore não substitui julgamento clínico, oxigenação, comorbidades, suporte domiciliar e tolerância VO.</div>
+</div>
+<div class="card">
+<h2>Critérios ATS/IDSA</h2>
+<div class="grid">
+<div><h3>Maiores</h3><ul class="tight"><li>Choque séptico necessitando vasopressor</li><li>Ventilação mecânica invasiva</li></ul></div>
+<div><h3>Menores</h3><ul class="tight"><li>FR &gt;30/min</li><li>PaO₂/FiO₂ &lt;250</li><li>Infiltrado multilobar</li><li>Confusão/desorientação</li><li>Ureia &gt;20 mg/dL</li><li>Leucopenia &lt;4.000/mm³</li><li>Plaquetas &lt;100.000/mm³</li><li>Temperatura &lt;36°C</li><li>Hipotensão com necessidade de ressuscitação volêmica</li></ul></div>
+</div>
+</div>
+</section>
+
+<section id="prescricao" class="tab hidden">
+<div class="card">
+<h2>💊 Antibioticoterapia sugerida</h2>
+<p class="lead">Resultado das marcações feitas no decisor. Esta aba mostra apenas o esquema correspondente ao cenário atual.</p>
+<div id="txResultDetailed"><div class="result info">Complete o decisor para exibir o esquema com doses.</div></div>
+<div class="actions"><button class="primary" onclick="showTab('decisor')">Revisar marcações</button></div>
+</div>
+<div class="card"><h2>⚙️ Antes de prescrever</h2>
+<ul class="tight"><li>Ajustar para alergias, função renal/hepática, gestação, interações, epidemiologia local, culturas prévias e protocolos institucionais.</li>
+<li>Não aguardar procalcitonina para iniciar antibiótico quando PAC bacteriana é provável.</li>
+<li>Em PAC grave/risco de resistência, colher culturas quando possível sem atrasar tratamento.</li></ul></div>
+</section>
+<section id="reavaliacao" class="tab hidden">
+<div class="card">
+<h2>⏱️ Reavaliação em 48–72 h</h2>
+<p class="lead">Selecione o desfecho. Se melhorou, marque as variáveis de estabilidade; a duração é sugerida imediatamente conforme o cenário já informado.</p>
+<div class="grid">
+<label class="option"><input type="radio" name="reevalOutcome" value="improved"><span><b>Melhorou</b><small>Revisar estabilidade, culturas, descalonamento e duração.</small></span></label>
+<label class="option"><input type="radio" name="reevalOutcome" value="notImproved"><span><b>Não melhorou</b><small>Abrir fluxo estruturado de causas da falha.</small></span></label>
+</div>
+<div id="stabilityBox" class="hidden">
+<div class="section-label">Variáveis de melhora/estabilidade clínica</div>
+<div class="grid">
+<label class="option"><input type="checkbox" class="stability"><span>Temperatura &lt;37,8 °C</span></label>
+<label class="option"><input type="checkbox" class="stability"><span>FC &lt;100 bpm</span></label>
+<label class="option"><input type="checkbox" class="stability"><span>FR &lt;24/min</span></label>
+<label class="option"><input type="checkbox" class="stability"><span>SpO₂ &gt;90% em ar ambiente ou O₂ basal</span></label>
+<label class="option"><input type="checkbox" class="stability"><span>PAS &gt;90 mmHg</span></label>
+<label class="option"><input type="checkbox" class="stability"><span>Estado mental normal/basal</span></label>
+<label class="option"><input type="checkbox" id="microReviewed"><span>Culturas/microbiologia revisadas</span></label>
+<label class="option"><input type="checkbox" id="deescalation"><span>Descalonamento avaliado</span></label>
+</div>
+</div>
+<div id="failureBox" class="hidden">
+<div class="section-label">Fluxo da não melhora — marque o que precisa ser investigado</div>
+<div class="grid">
+<label class="option"><input type="checkbox" class="failure"><span><b>Diagnóstico incorreto?</b><small>TEP, insuficiência cardíaca, TB, neoplasia.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Patógeno não coberto?</b><small>Resistência, MRSA, <i>Pseudomonas</i>.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Complicação?</b><small>Empiema, abscesso, necrose.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Outro foco?</b><small>Endocardite, meningite etc.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Exposição inadequada?</b><small>Adesão, absorção VO, dose, função renal/interações.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Hospedeiro especial?</b><small>Imunossupressão ou diagnóstico diferencial ampliado.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Coinfecção?</b><small>Viral/bacteriana.</small></span></label>
+<label class="option"><input type="checkbox" class="failure"><span><b>Controle de foco?</b><small>Drenagem, broncoscopia ou outro procedimento.</small></span></label>
+</div>
+</div>
+<div id="reevalResult"><div class="result info">Selecione “Melhorou” ou “Não melhorou”.</div></div>
+</div>
+<div class="card">
+<h2>Duração</h2>
+<table><tr><th>Cenário</th><th>Material orienta</th></tr>
+<tr><td>Ambulatorial estável</td><td>&lt;5 dias pode ser suficiente em selecionados</td></tr>
+<tr><td>Internado não grave + estabilidade</td><td>&lt;5 dias pode ser suficiente em selecionados</td></tr>
+<tr><td>Mínimo estudado na recomendação ATS 2026</td><td>3 dias</td></tr>
+<tr><td>PAC grave</td><td>≥5 dias</td></tr>
+<tr><td>MRSA/Pseudomonas</td><td>Geralmente mais prolongado; material cita 7 dias na recomendação 2019</td></tr>
+<tr><td>Abscesso/empiema/infecção profunda</td><td>Individualizar/prolongar</td></tr></table>
+<div class="alertline"><b>Não aplicar automaticamente 3 dias</b> à PAC grave, complicada, necrosante, por patógenos resistentes ou em doença pulmonar crônica importante.</div>
+</div>
+<div class="card">
+<h2>Corticoide</h2>
+<ul class="tight"><li>PAC não grave: não.</li><li>PAC grave: considerar.</li><li>PAC grave + influenza: não pela recomendação específica para PAC.</li><li>Choque séptico refratário: seguir protocolo de choque séptico.</li><li>DPOC/asma com indicação própria: tratar indicação concomitante.</li></ul>
+<p class="small">O material não define um único corticoide, dose ou duração universal; não apresentar dose fixa como consenso.</p>
+</div>
+</section>
+
+<section id="referencia" class="tab hidden">
+<div class="card">
+<h2>Diagnóstico, diferenciais e prevenção</h2>
+<h3>Imagem</h3>
+<ul class="tight"><li>RX de tórax: exame habitual.</li><li>US pulmonar pode substituir RX quando houver expertise.</li><li>RX inconclusivo + alta suspeita: US ou TC conforme contexto.</li><li>Obesidade, doença pulmonar prévia ou imunossupressão: considerar TC.</li><li>Abscesso, derrame loculado ou complicação: TC.</li><li>Falha terapêutica: reavaliar imagem; considerar TC.</li></ul>
+<h3>Diferenciais rápidos</h3>
+<table><tr><th>Diagnóstico</th><th>Pista</th><th>Próximo passo</th></tr>
+<tr><td>Influenza</td><td>Síndrome gripal, mialgia, início abrupto</td><td>PCR/teste molecular</td></tr>
+<tr><td>COVID-19</td><td>Epidemiologia + sintomas respiratórios</td><td>Teste viral</td></tr>
+<tr><td>TEP</td><td>Dispneia desproporcional, dor pleurítica, fatores de risco</td><td>Probabilidade clínica + angio-TC</td></tr>
+<tr><td>Edema pulmonar</td><td>IC, ortopneia, congestão</td><td>BNP, US, eco</td></tr>
+<tr><td>TB</td><td>Subagudo, perda ponderal, sudorese</td><td>Escarro/TRM-TB</td></tr>
+<tr><td>Neoplasia</td><td>Infiltrado persistente, tabagismo, perda ponderal</td><td>TC</td></tr>
+<tr><td>Abscesso</td><td>Cavitação, secreção purulenta</td><td>TC</td></tr>
+<tr><td>DPOC exacerbada</td><td>Sem novo infiltrado</td><td>Clínica + RX</td></tr>
+<tr><td>Pneumonite aspirativa</td><td>Aspiração + deterioração rápida</td><td>Observação/imagem</td></tr>
+<tr><td>Doença intersticial</td><td>Padrão intersticial difuso</td><td>TC</td></tr>
+<tr><td>Vasculite</td><td>Hemoptise + alteração renal/sistêmica</td><td>Autoimunidade/TC</td></tr>
+</table>
+<h3>Exames</h3>
+<ul class="tight"><li>Ambulatorial não grave: não solicitar investigação microbiológica extensa de rotina.</li><li>Internado: hemograma; ureia/creatinina; eletrólitos.</li><li>PCR: acompanhamento conforme protocolo local.</li><li>Gasometria: hipoxemia ou PAC grave.</li><li>Lactato: sepse, choque ou hipoperfusão.</li><li>Hemoculturas e escarro/aspirado: PAC grave ou risco MRSA/Pseudomonas.</li><li>Antígeno urinário pneumocócico: considerar na PAC grave.</li><li>Legionella: PAC grave, surto, viagem ou epidemiologia compatível.</li></ul>
+<h3>Procalcitonina</h3>
+<ul class="tight"><li>Baixa favorece etiologia viral, mas não exclui bactéria.</li><li>Alta aumenta probabilidade de componente bacteriano.</li><li>Em queda pode apoiar resposta/descalonamento.</li><li><b>Nunca usar isoladamente</b> para decidir início ou suspensão do antibiótico.</li></ul>
+</div>
+
+<div class="card"><h2>⚡ Plantão — decisões rápidas</h2>
+<table><tr><th>Pergunta</th><th>Conduta objetiva</th></tr>
+<tr><td>Sintomas compatíveis + infiltrado novo?</td><td>PAC provável.</td></tr>
+<tr><td>Está grave?</td><td>1 critério maior ou ≥3 menores ATS/IDSA.</td></tr>
+<tr><td>Precisa de UTI?</td><td>Critério maior ou ≥3 menores + julgamento clínico.</td></tr>
+<tr><td>Precisa investigar etiologia?</td><td>Sim se grave, risco de MRSA/Pseudomonas ou situação epidemiológica.</td></tr>
+<tr><td>Antibiótico imediato?</td><td>Sim se PAC bacteriana provável; não aguardar procalcitonina.</td></tr>
+<tr><td>Aspiração?</td><td>Não adicionar anaerobicida de rotina; exceção: abscesso/empiema.</td></tr>
+<tr><td>Vírus positivo?</td><td>Depende do ambiente, comorbidades e gravidade.</td></tr>
+<tr><td>Quando parar?</td><td>Estabilidade clínica diária; cursos curtos em selecionados não graves.</td></tr>
+<tr><td>Corticoide?</td><td>Não na PAC não grave; considerar na PAC grave sem influenza.</td></tr></table></div>
+
+<div class="card"><h2>🩺 Casos clínicos rápidos</h2>
+<details><summary>Caso 1 — PAC ambulatorial</summary><p>42 anos, sem comorbidades, febre, tosse, infiltrado lobar, estável, CURB-65 = 0.</p><p><b>Conduta:</b> amoxicilina 1 g VO 8/8 h ou doxiciclina 100 mg VO 12/12 h.</p></details>
+<details><summary>Caso 2 — PAC internada</summary><p>72 anos, DPOC, febre, FR 28, PA 110/70, infiltrado lobar, sem critérios de PAC grave.</p><p><b>Conduta:</b> internação + β-lactâmico + macrolídeo; exemplo: ceftriaxona + azitromicina.</p></details>
+<details><summary>Caso 3 — PAC grave</summary><p>68 anos, FR 34, confusão, infiltrados multilobares, PaO₂/FiO₂ 220.</p><p><b>Interpretação:</b> ≥3 critérios menores → PAC grave → UTI.</p></details>
+<details><summary>Caso 4 — Influenza + PAC</summary><p>60 anos, influenza positiva, infiltrado pulmonar e necessidade de internação.</p><p><b>Conduta:</b> oseltamivir + antibiótico empírico para PAC + avaliação de gravidade + investigação de coinfecção conforme cenário.</p></details>
+</div>
+<div class="card">
+<h2>Checklist de prescrição</h2>
+<div class="grid">
+<label class="option"><input type="checkbox"> PAC realmente provável?</label>
+<label class="option"><input type="checkbox"> RX/US/TC compatível?</label>
+<label class="option"><input type="checkbox"> Gravidade avaliada?</label>
+<label class="option"><input type="checkbox"> CURB-65 calculado?</label>
+<label class="option"><input type="checkbox"> Critérios ATS/IDSA para PAC grave?</label>
+<label class="option"><input type="checkbox"> Necessidade de UTI?</label>
+<label class="option"><input type="checkbox"> Comorbidades?</label>
+<label class="option"><input type="checkbox"> Antibiótico nos últimos 90 dias?</label>
+<label class="option"><input type="checkbox"> Hospitalização recente?</label>
+<label class="option"><input type="checkbox"> MRSA/Pseudomonas prévios?</label>
+<label class="option"><input type="checkbox"> Epidemiologia local?</label>
+<label class="option"><input type="checkbox"> Influenza/COVID quando indicado?</label>
+<label class="option"><input type="checkbox"> Culturas antes do antibiótico se grave/risco de resistência?</label>
+<label class="option"><input type="checkbox"> Função renal?</label>
+<label class="option"><input type="checkbox"> Alergia?</label>
+<label class="option"><input type="checkbox"> Interações?</label>
+<label class="option"><input type="checkbox"> Necessidade real de cobertura anaeróbia?</label>
+<label class="option"><input type="checkbox"> Reavaliar em 48–72 h?</label>
+<label class="option"><input type="checkbox"> Descalonar quando possível?</label>
+<label class="option"><input type="checkbox"> Definir duração pela estabilidade clínica?</label>
+</div>
+</div>
+
+<div class="card">
+<h2>Erros comuns / pérolas</h2>
+<table><tr><th>Erro</th><th>Correção</th></tr>
+<tr><td>“PCT baixa = não é bactéria”</td><td>Não exclui bactéria isoladamente.</td></tr>
+<tr><td>“Vírus positivo = suspender antibiótico”</td><td>Depende de ambiente, comorbidades e gravidade.</td></tr>
+<tr><td>“Aspiração = clindamicina/metronidazol”</td><td>Anaerobicida só de rotina se abscesso/empiema ou forte suspeita.</td></tr>
+<tr><td>“Internado = vancomicina + piperacilina/tazobactam”</td><td>Ampliar apenas com risco validado.</td></tr>
+<tr><td>“HCAP”</td><td>Categoria abandonada para guiar terapia.</td></tr>
+<tr><td>“PAC grave = levofloxacino isolado”</td><td>Não é esquema empírico preferido.</td></tr>
+<tr><td>“Antibiótico sempre 7–10 dias”</td><td>Cursos curtos podem bastar em selecionados estáveis.</td></tr>
+<tr><td>“Corticoide para toda PAC”</td><td>Não usar na PAC não grave.</td></tr></table>
+<div class="callout"><b>5 pérolas:</b> 1) primeiro pergunte se é PAC grave; 2) antibiótico cedo quando PAC bacteriana é provável; 3) cultura também serve para retirar antibiótico; 4) vírus positivo não significa pneumonia exclusivamente viral; 5) 48–72 h é oportunidade central de stewardship.</div>
+</div>
+
+<div class="card">
+<h2>Follow-up e prevenção</h2>
+<ul class="tight"><li>Se evolução boa, não solicitar RX de controle rotineiramente apenas para documentar resolução.</li><li>Reimagem se sintomas persistentes, piora, falha terapêutica, tabagismo/risco de neoplasia, infiltrado persistente ou suspeita de complicação.</li><li>Após recuperação: avaliar vacinação influenza, pneumocócica e COVID-19 conforme recomendações vigentes; cessação do tabagismo; redução de álcool; controle de comorbidades.</li></ul>
+</div>
+
+<div class="card">
+<h2>Referências do material-base</h2>
+<ol class="small">
+<li>Corrêa RA et al. Recomendações para o manejo da pneumonia adquirida na comunidade. J Bras Pneumol. 2018;44(5):405-424.</li>
+<li>File TM Jr, Ramirez JA. Community-acquired pneumonia. NEJM. 2023;389(7):632-641.</li>
+<li>Jones BE et al. Diagnosis and management of community-acquired pneumonia: official ATS clinical practice guideline. AJRCCM. 2026;212(1):24-43.</li>
+<li>Metlay JP et al. Diagnosis and treatment of adults with community-acquired pneumonia: official ATS/IDSA guideline. AJRCCM. 2019;200(7):e45-e67.</li>
+</ol>
+<p class="small"><b>Base editorial:</b> “Pneumonia adquirida na comunidade — versão 2”, atualização indicada no arquivo: 16/09/2026.</p>
+</div>
+</section>
+
+<div class="stickybar">
+  <button class="primary" onclick="showTab('decisor')">← Voltar ao decisor</button>
+  <span class="small">PAC • adulto imunocompetente • Infecto Consult Premium</span>
+</div>
+<div class="footer">Esta é uma ferramenta de apoio à decisão e não substitui protocolo institucional, avaliação clínica ou atualização normativa.</div>
+</main>
+</div>
+
+<script>
+const decision={pac:false,severe:false,major:0,minor:0,curb:null,setting:null,comorbid:false,risk:false};
+function showTab(id){document.querySelectorAll('.tab').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='reavaliacao')renderReevaluation();}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+function checked(sel){return [...document.querySelectorAll(sel)].filter(x=>x.checked)}
+function syncComorbid(){decision.comorbid=checked('.comorbidity').length>0;}
+function confirmPAC(){const s=document.getElementById('symptoms').checked,i=document.getElementById('infiltrate').checked;decision.pac=s&&i;['severityStep','siteStep','riskStep','testsStep','viralStep','aspStep','txFlowStep'].forEach(id=>document.getElementById(id).classList.toggle('active',decision.pac));document.getElementById('pacResult').innerHTML=decision.pac?'<div class="result good"><b>PAC provável:</b> sintomas/sinais compatíveis + infiltrado pulmonar novo. Agora o decisor usa as marcações seguintes para montar exames e tratamento.</div>':'<div class="result warn"><b>Não confirme PAC ainda.</b> Reavalie diagnóstico diferencial até haver sintomas/sinais compatíveis + infiltrado novo.</div>';updateAll();}
+function calcSeverity(){decision.major=checked('.major').length;decision.minor=checked('.minor').length;decision.severe=decision.major>=1||decision.minor>=3;document.getElementById('riskSevere').checked=decision.severe;document.getElementById('severityResult').innerHTML=decision.severe?`<div class="result alert"><span class="badge red">PAC GRAVE</span><b> ${decision.major} critério(s) maior(es) e ${decision.minor} menor(es). Avaliar UTI imediatamente.</b><br>β-lactâmico + macrolídeo ou β-lactâmico + fluoroquinolona respiratória; avaliar MRSA/Pseudomonas e colher culturas.</div>`:'<div class="result good"><span class="badge green">NÃO GRAVE</span><b> Prosseguir para CURB-65 + contexto.</b></div>';if(decision.severe)decision.setting='icu';updateAll();}
+function calcCURB(){const ids=['curbConf','curbUrea','curbFR','curbBP','curbAge'];decision.curb=ids.reduce((a,id)=>a+Number(document.getElementById(id).value),0);syncComorbid();const home=document.getElementById('home').value==='1';if(decision.severe)decision.setting='icu';else if(decision.curb<=1&&home)decision.setting='amb';else decision.setting='ward';let text=decision.curb<=1?'Geralmente ambulatorial':decision.curb===2?'Considerar internação/observação':'Hospitalização; avaliar gravidade/UTI';if(!home)text+=' <b>Suporte domiciliar/tolerância VO inadequados desfavorecem manejo ambulatorial.</b>';const list=checked('.comorbidity').map(x=>x.value).join(', ')||'nenhuma marcada';document.getElementById('curbResult').innerHTML=`<div class="result info"><div class="kpi"><div><b>${decision.curb}</b>CURB-65</div><div><b>${decision.setting==='amb'?'AMB':decision.setting==='icu'?'UTI':'HOSP'}</b>destino sugerido</div><div><b>${decision.comorbid?'SIM':'NÃO'}</b>comorbidades</div></div><b>${text}</b><br><span class="small">Comorbidades: ${list}. CURB-65 não substitui julgamento clínico.</span></div>`;updateAll();}
+function calcRisk(){decision.risk=checked('.risk').length>0;const epi=checked('.epi-factor').map(x=>x.parentElement.innerText.trim());document.getElementById('riskResult').innerHTML=decision.risk?`<div class="result warn"><span class="badge amber">RISCO PRESENTE</span> Colher culturas e considerar cobertura dirigida conforme o agente/fator; reavaliar em 48–72 h para descalonar.</div>`:'<div class="result good"><span class="badge green">SEM FATOR MARCADO</span> Não ampliar cobertura apenas pela antiga categoria HCAP.</div>';if(epi.length)document.getElementById('riskResult').innerHTML+=`<div class="callout"><b>Contexto epidemiológico marcado:</b> ${epi.join('; ')}. Isso entra automaticamente no pacote de exames.</div>`;updateAll();}
+function calcTests(){
+  if(!decision.pac)return;
+  syncComorbid();
+  decision.risk=checked('.risk').length>0;
+  const epi=checked('.epi-factor').length>0;
+  let badge='', cls='info', items=[], notes=[];
+  if(decision.severe||decision.setting==='icu'){
+    badge='INTERNAÇÃO EM UTI'; cls='alert';
+    items=['Hemograma, ureia, creatinina, PCR, gasometria, lactato e procalcitonina','<b>Hemoculturas e cultura de escarro/aspirado</b>','<b>Antígeno urinário pneumocócico</b> — considerar','<b>Antígeno urinário para <i>Legionella</i></b>'];
+  }else if(decision.setting==='ward'){
+    badge='INTERNAÇÃO EM ENFERMARIA • NÃO GRAVE'; cls='info';
+    items=['Hemograma','Ureia/creatinina','Eletrólitos','PCR para acompanhamento conforme protocolo local'];
+    if(decision.risk)items.push('<b>Hemoculturas e cultura de escarro/aspirado</b> — risco de MRSA/<i>Pseudomonas</i>');
+    if(epi)items.push('<b>Antígeno urinário para <i>Legionella</i></b> — surto, viagem ou epidemiologia compatível');
+    notes.push('Procalcitonina, quando utilizada, deve ser interpretada em conjunto com o quadro clínico e preferencialmente em série.');
+  }else if(decision.setting==='amb'&&decision.comorbid){
+    badge='AMBULATÓRIO • COM COMORBIDADES'; cls='warn';
+    items=['Não solicitar investigação microbiológica extensa de rotina','Exames adicionais conforme a comorbidade, descompensação clínica e protocolo local'];
+    if(epi)items.push('Considerar <b>antígeno urinário para <i>Legionella</i></b> conforme surto, viagem ou epidemiologia compatível');
+  }else if(decision.setting==='amb'){
+    badge='AMBULATÓRIO • SEM COMORBIDADES'; cls='good';
+    items=['Não solicitar investigação microbiológica extensa de rotina'];
+    if(epi)items.push('Considerar <b>antígeno urinário para <i>Legionella</i></b> conforme surto, viagem ou epidemiologia compatível');
+  }else{
+    document.getElementById('testsResult').innerHTML='<div class="result info"><b>Cenário ainda não definido.</b> Complete gravidade e CURB-65 + contexto.</div>';return;
+  }
+  document.getElementById('testsResult').innerHTML=`<div class="result ${cls}"><span class="badge ${cls==='good'?'green':cls==='warn'?'amber':cls==='alert'?'red':''}">${badge}</span><h3>Exames correspondentes</h3><ul class="tight">${items.map(x=>`<li>${x}</li>`).join('')}</ul>${notes.map(x=>`<p class="small">${x}</p>`).join('')}</div>`;
+}
+function viralDecision(){const v=document.querySelector('input[name="viralStatus"]:checked')?.value;let t='Selecione o resultado do teste viral.',c='warn';if(v==='notdone'){t='<b>Teste não realizado:</b> se houver circulação/surto/viagem/exposição ou gravidade, então considerar teste viral; não atrasar antibiótico quando PAC bacteriana é provável.';c='info'}if(v==='negative'){t='<b>Teste negativo:</b> seguir o fluxo bacteriano definido por gravidade, local e risco; interpretar conforme sensibilidade e momento da coleta.';c='info'}if(v==='positive'){if(decision.setting==='amb'&&!decision.comorbid){t='<b>Vírus positivo • ambulatório sem comorbidades:</b> antibiótico pode não ser necessário quando a suspeita bacteriana é baixa.';c='good'}else if(decision.setting==='amb'){t='<b>Vírus positivo • ambulatório com comorbidades:</b> considerar antibiótico.';c='warn'}else if(decision.severe||decision.setting==='icu'){t='<b>Vírus positivo • PAC grave:</b> manter antibiótico; o resultado não exclui coinfecção.';c='alert'}else{t='<b>Vírus positivo • internado não grave:</b> manter antibiótico empírico inicialmente.';c='info'}}document.getElementById('viralResult').innerHTML=`<div class="result ${c}">${t}</div>`;}
+function aspDecision(){const v=document.querySelector('input[name="asp"]:checked')?.value;let t='Selecione uma opção.',c='info';if(v==='na')t='<b>Não se aplica:</b> manter o esquema padrão de PAC.';if(v==='chemical')t='<b>Aspiração + deterioração imediata:</b> considerar pneumonite química; suporte/observação; se melhorar em 24–48 h, antibiótico pode não ser necessário.';if(v==='pneumonia')t='<b>Pneumonia após aspiração:</b> tratar como PAC conforme gravidade.';if(v==='abscess'){t='<b>Abscesso pulmonar:</b> considerar cobertura anaeróbia e duração individualizada/prolongada.';c='warn'}if(v==='empyema'){t='<b>Empiema:</b> cobertura anaeróbia + avaliação de drenagem; duração individualizada.';c='warn'}if(v==='isolated')t='<b>Aspiração isolada sem abscesso/empiema:</b> não adicionar anaerobicida de rotina.';document.getElementById('aspResult').innerHTML=`<div class="result ${c}">${t}</div>`;}
+function autoTreatment(){
+  if(!decision.pac)return;
+  syncComorbid(); decision.risk=checked('.risk').length>0;
+  let badge='', title='Escolhas', cls='info', items=[], notes=[];
+  if(decision.severe||decision.setting==='icu'){
+    badge='PAC GRAVE • UTI'; cls='alert'; title='Esquemas preferidos';
+    items=['<b>Ceftriaxona 2 g IV 24/24 h + azitromicina 500 mg IV 24/24 h</b> OU','<b>Ceftriaxona 2 g IV 24/24 h + levofloxacino 750 mg IV 24/24 h</b>'];
+  }else if(decision.setting==='ward'){
+    badge='ENFERMARIA • NÃO GRAVE'; cls='info';
+    items=['<b>Ceftriaxona 1–2 g IV 1x/dia + azitromicina 500 mg IV/VO 1x/dia</b> OU','Ampicilina/sulbactam 1,5–3 g IV 6/6 h + azitromicina OU','Cefotaxima 1–2 g IV 8/8 h + azitromicina OU','Levofloxacino 750 mg/dia ou moxifloxacino 400 mg/dia','Contraindicação a macrolídeo/FQ: β-lactâmico + doxiciclina 100 mg 12/12 h'];
+  }else if(decision.setting==='amb'&&decision.comorbid){
+    badge='AMBULATÓRIO • COM COMORBIDADES'; cls='warn';
+    items=['<b>Amoxicilina/clavulanato + azitromicina</b> OU','<b>Amoxicilina/clavulanato + doxiciclina</b> OU','<b>Levofloxacino 750 mg/dia</b> ou <b>moxifloxacino 400 mg/dia</b>'];
+    notes.push('O material-base não informa dose única de amoxicilina/clavulanato para este cenário; ajustar à formulação e ao protocolo local.');
+  }else if(decision.setting==='amb'){
+    badge='AMBULATÓRIO • SEM COMORBIDADES'; cls='good';
+    items=['<b>Amoxicilina 1 g VO 8/8 h OU</b>','<b>Doxiciclina 100 mg VO 12/12 h OU</b>','Azitromicina 500 mg D1 → 250 mg/dia; monoterapia somente se resistência pneumocócica local a macrolídeos &lt;25%.'];
+  }else{
+    const pending='<div class="result info"><b>Local de tratamento ainda não definido.</b> Complete gravidade e CURB-65 + contexto para exibir o esquema.</div>';
+    document.getElementById('autoTxResult').innerHTML=pending; const d=document.getElementById('txResultDetailed');if(d)d.innerHTML=pending; return;
+  }
+  if(document.getElementById('riskMRSA').checked){items.push('<b>Cobertura adicional para MRSA:</b> vancomicina 15 mg/kg IV 12/12 h, com ajuste por monitorização, OU linezolida 600 mg IV/VO 12/12 h.');}
+  if(document.getElementById('riskPSA').checked||document.getElementById('riskRecent').checked){items.push('<b>Cobertura antipseudomonas:</b> piperacilina/tazobactam 4,5 g IV 6/6 h OU cefepima 2 g IV 8/8 h OU ceftazidima 2 g IV 8/8 h OU meropenem 1 g IV 8/8 h OU imipeném 500 mg IV 6/6 h OU aztreonam 2 g IV 8/8 h.');}
+  const asp=document.querySelector('input[name="asp"]:checked')?.value;
+  if(['abscess','empyema'].includes(asp))notes.push('Cobertura anaeróbia e controle de foco indicados; fármaco e dose não definidos no material-base.');
+  const html=`<div class="result ${cls}"><span class="badge ${cls==='good'?'green':cls==='warn'?'amber':cls==='alert'?'red':''}">${badge}</span><h3>${title}</h3><ul class="tight">${items.map(x=>`<li>${x}</li>`).join('')}</ul>${notes.map(x=>`<div class="callout">${x}</div>`).join('')}</div>`;
+  document.getElementById('autoTxResult').innerHTML=html; const d=document.getElementById('txResultDetailed');if(d)d.innerHTML=html;
+}
+function renderTx(){autoTreatment();}
+function renderReevaluation(){const outcome=document.querySelector('input[name="reevalOutcome"]:checked')?.value;document.getElementById('stabilityBox').classList.toggle('hidden',outcome!=='improved');document.getElementById('failureBox').classList.toggle('hidden',outcome!=='notImproved');const r=document.getElementById('reevalResult');if(!outcome){r.innerHTML='<div class="result info">Selecione “Melhorou” ou “Não melhorou”.</div>';return}if(outcome==='notImproved'){r.innerHTML='<div class="result alert"><b>Sem melhora em 48–72 h: não prolongar ou ampliar antibiótico automaticamente.</b><ol><li>Reconfirmar diagnóstico.</li><li>Revisar cobertura, microbiologia, dose e exposição.</li><li>Buscar complicação e outro foco.</li><li>Reavaliar hospedeiro/coinfecção.</li><li>Definir necessidade de procedimento e nova imagem.</li></ol></div>';return}const stable=checked('.stability').length;const asp=document.querySelector('input[name="asp"]:checked')?.value;let dur;if(['abscess','empyema'].includes(asp))dur='Abscesso/empiema/infecção profunda: duração não definida pelo decisor; individualizar e prolongar conforme controle de foco e evolução.';else if(decision.risk)dur='MRSA/Pseudomonas: geralmente mais prolongado; o material-base cita 7 dias na recomendação de 2019.';else if(decision.severe)dur='PAC grave: pelo menos 5 dias, condicionados à estabilidade clínica e ausência de complicação.';else dur='PAC ambulatorial ou internada não grave, estável: curso <5 dias pode bastar em selecionados; mínimo estudado citado: 3 dias.';r.innerHTML=`<div class="result ${stable===6?'good':'warn'}"><b>${stable===6?'Todas as 6 variáveis estão estáveis':'Melhora informada, mas estabilidade incompleta'}:</b> ${stable}/6 critérios marcados.<br><br><b>Duração sugerida pelo cenário:</b> ${dur}<br><span class="small">Não aplicar automaticamente 3 dias a PAC grave, complicada, necrosante, resistente ou em doença pulmonar crônica importante.</span></div>`;}
+function updateAll(){syncComorbid();calcTests();viralDecision();aspDecision();autoTreatment();renderReevaluation();}
+document.addEventListener('change',e=>{if(e.target.matches('.major,.minor'))calcSeverity();else if(e.target.matches('#curbConf,#curbUrea,#curbFR,#curbBP,#curbAge,#home,#comorb,.comorbidity'))calcCURB();else if(e.target.matches('.risk,.epi-factor'))calcRisk();else updateAll();});
+function resetAll(){document.querySelectorAll('input[type=checkbox],input[type=radio]').forEach(x=>x.checked=false);document.querySelectorAll('select').forEach(x=>x.selectedIndex=0);document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));Object.assign(decision,{pac:false,severe:false,major:0,minor:0,curb:null,setting:null,comorbid:false,risk:false});['pacResult','severityResult','curbResult','riskResult'].forEach(id=>document.getElementById(id).innerHTML='');document.getElementById('testsResult').innerHTML='<div class="result info">Marque os campos anteriores para gerar o pacote.</div>';document.getElementById('viralResult').innerHTML='<div class="result info">Selecione o resultado.</div>';document.getElementById('aspResult').innerHTML='<div class="result info">Selecione uma opção.</div>';renderReevaluation();}
+document.addEventListener('DOMContentLoaded',()=>{renderTx();renderReevaluation();});
+</script>
+</body>
+</html>

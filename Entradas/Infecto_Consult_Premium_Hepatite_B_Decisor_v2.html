@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infecto Consult Premium — Hepatite B</title>
+<style>
+:root{--ink:#18212b;--muted:#64748b;--line:#dbe2ea;--soft:#eef6fb;--accent:#2563eb;--ok:#087f5b;--warn:#a15c00;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;background:#f5f7fa;color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+main{max-width:820px;margin:auto;padding:18px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+button.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:700;cursor:pointer}
+button.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+section{display:none}section.active{display:block}.hero{background:var(--soft);border:1px solid #d7e8f4;border-radius:16px;padding:17px;margin-bottom:14px}
+.hero b{font-size:18px}.hero p{margin:7px 0 0;color:#334155;line-height:1.45}
+.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0}
+.card h3{font-size:15px;margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+@media(max-width:560px){main{padding:12px}.grid{grid-template-columns:1fr}}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:11px;cursor:pointer;min-height:44px;font-size:13px;line-height:1.35}
+.opt:has(input:checked){border-color:var(--accent);background:#f0f7ff}
+input{accent-color:var(--accent)}select{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:9px;padding:9px;font-size:16px;background:#fff}
+.field{font-size:12px;font-weight:700;color:#475569}.field select{margin-top:5px}
+.result{border-radius:15px;padding:15px;margin-top:14px;border:1px solid #cbd5e1;background:#f8fafc}
+.result.treat{border-color:#9dd9c3;background:#eefbf5}.result.warn{border-color:#f0c98d;background:#fff8e8}.result.danger{border-color:#efb2ae;background:#fff3f2}
+.result h3{margin:0 0 7px;font-size:16px}.result p{margin:4px 0;line-height:1.45;font-size:14px}
+.mini{font-size:12px;color:var(--muted);line-height:1.45}.rule{padding:11px;border-left:4px solid var(--accent);background:#f8fafc;border-radius:8px;margin:8px 0;font-size:13px;line-height:1.45}
+.item{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.45}.item:last-child{border-bottom:0}
+</style>
+</head>
+<body>
+<main id="app">
+<div class="tabs">
+<button class="tab active" data-tab="decisor">⚡ Decisor</button>
+<button class="tab" data-tab="sorologia">🧪 Sorologia</button>
+<button class="tab" data-tab="antiviral">💊 Antiviral</button>
+<button class="tab" data-tab="gestante">🤰 Gestante</button>
+<button class="tab" data-tab="seguimento">📈 Seguimento</button>
+<button class="tab" data-tab="especiais">⚠️ Especiais</button>
+</div>
+
+<section id="decisor" class="active">
+<div class="hero"><b>🔴 Hepatite B — Decisor Clínico</b></div>
+
+<div class="card"><h3>1. Qual é o cenário?</h3><div class="grid">
+<label class="opt"><input type="radio" name="scenario" value="acute"> Hepatite B aguda</label>
+<label class="opt"><input type="radio" name="scenario" value="chronic" checked> Hepatite B crônica</label>
+<label class="opt"><input type="radio" name="scenario" value="preg"> Gestante com HBV</label>
+<label class="opt"><input type="radio" name="scenario" value="immuno"> Imunossupressão / quimioterapia</label>
+</div></div>
+
+<div class="card" id="acuteBox" style="display:none"><h3>Se hepatite B aguda → há gravidade?</h3>
+<label class="opt"><input type="checkbox" id="acuteSevere"> INR &gt;1,5, icterícia persistente, ascite ou encefalopatia</label></div>
+
+<div id="chronicBox">
+<div class="card"><h3>2. Há um critério maior para tratar?</h3><div class="grid">
+<label class="opt"><input type="checkbox" class="criterion"> Cirrose compensada ou descompensada</label>
+<label class="opt"><input type="checkbox" class="criterion"> Fibrose avançada / F2 ou maior</label>
+<label class="opt"><input type="checkbox" class="criterion"> HBV-DNA ≥2.000 UI/mL + ALT ≥52 homem / ≥37 mulher, em 2 medidas ≥3 meses</label>
+<label class="opt"><input type="checkbox" class="criterion"> HBeAg reagente + idade &gt;30 anos</label>
+<label class="opt"><input type="checkbox" class="criterion"> História familiar de CHC em parente de 1º grau</label>
+<label class="opt"><input type="checkbox" class="criterion"> Manifestação extra-hepática pelo HBV</label>
+<label class="opt"><input type="checkbox" class="criterion"> Coinfecção HIV ou HDV</label>
+<label class="opt"><input type="checkbox" class="criterion"> Imunossupressão / transplante</label>
+</div></div>
+
+<div class="card"><h3>3. Se não marcou critério: qual o perfil?</h3><div class="grid">
+<label class="opt"><input type="radio" name="profile" value="inactive" checked> HBeAg− + HBV-DNA &lt;2.000 + ALT normal</label>
+<label class="opt"><input type="radio" name="profile" value="border"> HBV-DNA ≥2.000 com ALT normal / perfil limítrofe</label>
+<label class="opt"><input type="radio" name="profile" value="younghbe"> HBeAg+ + idade &lt;30 + ALT normal</label>
+<label class="opt"><input type="radio" name="profile" value="elevated"> ALT elevada, mas sem critério definido</label>
+</div></div>
+</div>
+
+<div class="card" id="drugBox" style="display:none"><h3>4. Se vai tratar → escolha do antiviral</h3><div class="grid">
+<label class="opt"><input type="radio" name="drug" value="tdf" checked> Sem contraindicação renal/óssea → TDF</label>
+<label class="opt"><input type="radio" name="drug" value="etv"> TDF contraindicado + sem lamivudina prévia → ETV</label>
+<label class="opt"><input type="radio" name="drug" value="taf"> TDF contraindicado + lamivudina/FTC/PrEP prévia → TAF</label>
+</div><p class="mini">TDF 300 mg 1x/dia · ETV 0,5 mg 1x/dia em jejum · TAF 25 mg 1x/dia com alimento.</p></div>
+
+<div class="result" id="mainResult"></div>
+</section>
+
+<section id="sorologia">
+<div class="hero"><b>🧪 “Se o painel é esse → a interpretação é esta”</b><p>Use o padrão sorológico para reconhecer os principais cenários.</p></div>
+<div class="card"><div class="grid">
+<label class="field">HBsAg<select id="sHBs"><option value="+">Reagente (+)</option><option value="-">Não reagente (−)</option></select></label>
+<label class="field">Anti-HBc total<select id="sHBc"><option value="+">Reagente (+)</option><option value="-">Não reagente (−)</option></select></label>
+<label class="field">Anti-HBc IgM<select id="sIgM"><option value="+">Reagente (+)</option><option value="-">Não reagente (−)</option></select></label>
+<label class="field">Anti-HBs<select id="sHBsAb"><option value="+">Reagente (+)</option><option value="-">Não reagente (−)</option></select></label>
+</div><div class="result" id="seroResult"></div></div>
+<div class="rule"><strong>SE HBsAg persistente ≥6 meses → ENTÃO infecção crônica.</strong></div>
+<div class="rule"><strong>SE anti-HBc isolado → ENTÃO não chame automaticamente de “imune”.</strong> Considerar repetição e HBV-DNA conforme contexto clínico.</div>
+</section>
+
+<section id="antiviral">
+<div class="hero"><b>💊 “Se esse paciente → então este antiviral”</b></div>
+<div class="card"><div class="grid">
+<label class="opt"><input type="radio" name="drug2" value="tdf" checked> Sem contraindicação renal/óssea</label>
+<label class="opt"><input type="radio" name="drug2" value="preg"> Gestação / amamentação</label>
+<label class="opt"><input type="radio" name="drug2" value="etv"> TDF contraindicado, sem lamivudina prévia</label>
+<label class="opt"><input type="radio" name="drug2" value="taf"> TDF contraindicado + lamivudina/FTC/PrEP prévia</label>
+<label class="opt"><input type="radio" name="drug2" value="hiv"> Coinfecção HIV/HBV</label>
+</div><div class="result" id="drugResult"></div></div>
+<div class="card"><h3>Quando evitar TDF?</h3>
+<div class="item">ClCr &lt;60 mL/min, queda ≥25% da função renal, hipofosfatemia ou tubulopatia.</div>
+<div class="item">Proteinúria/albuminúria relevante.</div>
+<div class="item">Osteoporose, fratura por fragilidade ou alto risco ósseo.</div>
+<div class="item">Cirrose, transplante ou imunossupressão/quimioterapia → individualizar.</div>
+</div>
+</section>
+
+<section id="gestante">
+<div class="hero"><b>🤰 Gestante com HBsAg+ → siga esta sequência</b></div>
+<div class="card"><h3>Preencha</h3><div class="grid">
+<label class="field">HBV-DNA<select id="gDNA"><option value="high">≥200.000 UI/mL</option><option value="low">&lt;200.000 UI/mL</option><option value="unknown">Não disponível</option></select></label>
+<label class="field">HBeAg<select id="gHBe"><option value="+">Reagente</option><option value="-">Não reagente</option></select></label>
+<label class="field">F3/F4 ou indicação materna<select id="gFib"><option value="no">Não</option><option value="yes">Sim</option></select></label>
+</div><div class="result" id="pregResult"></div></div>
+<div class="card"><h3>RN de mãe HBsAg+</h3>
+<div class="rule"><strong>SE mãe HBsAg+ → ENTÃO vacina hepatite B + IGHAHB</strong> em locais distintos, idealmente nas primeiras 12–24 horas.</div>
+<div class="rule"><strong>SE todo RN → ENTÃO vacina monovalente o mais cedo possível, preferencialmente ≤12 h.</strong></div>
+</div>
+</section>
+
+<section id="seguimento">
+<div class="hero"><b>📈 “Se não tratar → como acompanhar?”</b></div>
+<div class="card"><h3>Sem indicação de tratamento</h3>
+<div class="item"><b>HBeAg− + HBV-DNA &lt;2.000 + ALT normal</b><br>ALT a cada 6–12 meses; HBsAg/HBV-DNA anual; fibrose a cada 18–36 meses.</div>
+<div class="item"><b>HBV-DNA ≥2.000 + ALT normal / limítrofe</b><br>ALT a cada 3 meses no primeiro ano; HBV-DNA e fibrose anuais por ≥3 anos.</div>
+<div class="item"><b>HBeAg+ + idade &lt;30 + ALT normal</b><br>ALT/HBV-DNA seriados; estadiar; tratar se mudar critério.</div>
+<div class="item"><b>ALT elevada sem critério</b><br>Excluir MASLD, álcool, fármacos e coinfecções; repetir e tratar se persistir com critério.</div>
+</div>
+<div class="card"><h3>Em tratamento</h3>
+<div class="item"><b>HBV-DNA:</b> avaliar resposta inicial; depois anual se suprimido/estável.</div>
+<div class="item"><b>Creatinina/eTFG ± fósforo/urina:</b> 1–2x/ano com TDF ou risco renal.</div>
+<div class="item"><b>US ± AFP:</b> a cada 6 meses se risco de CHC.</div>
+<div class="item"><b>HBeAg/anti-HBe:</b> anual se HBeAg+ ao início.</div>
+</div>
+<div class="card"><h3>🔎 HBV-DNA detectável durante terapia</h3>
+<div class="rule">1. Confirmar adesão, dose e dispensação.</div>
+<div class="rule">2. Rever interação medicamentosa.</div>
+<div class="rule">3. Escape = aumento ≥1 log em relação ao nadir ou ≥100 UI/mL após indetectabilidade → repetir HBV-DNA em 1 mês.</div>
+<div class="rule">4. ETV + boa adesão → pesquisar lamivudina prévia; trocar por TDF/TAF quando indicado.</div>
+</div>
+<div class="card"><h3>🎯 Rastreamento de CHC</h3>
+<div class="rule"><strong>SE F3/F4 ou cirrose → ENTÃO US de abdome a cada 6 meses.</strong></div>
+<div class="rule"><strong>SE homem ≥40 anos ou mulher ≥50 anos → ENTÃO US a cada 6 meses.</strong></div>
+<div class="rule"><strong>SE mais jovem + história familiar de CHC, HIV/HCV/HDV, MASLD/doença alcoólica ou PAGE-B &gt;9 → ENTÃO rastrear.</strong></div>
+</div>
+</section>
+
+<section id="especiais">
+<div class="hero"><b>⚠️ Situações em que a decisão muda</b></div>
+<div class="card"><div class="grid">
+<label class="opt"><input type="radio" name="special" value="hiv" checked> HIV/HBV</label>
+<label class="opt"><input type="radio" name="special" value="hcv"> HCV/HBV em DAA</label>
+<label class="opt"><input type="radio" name="special" value="hdv"> Suspeita de HDV</label>
+<label class="opt"><input type="radio" name="special" value="immuno"> Imunossupressão/QT</label>
+<label class="opt"><input type="radio" name="special" value="dialysis"> Hemodiálise/DRC</label>
+<label class="opt"><input type="radio" name="special" value="transplant"> Transplante</label>
+</div><div class="result" id="specialResult"></div></div>
+<div class="card"><h3>🚨 Interrupção do antiviral</h3>
+<div class="result danger"><h3>Não interromper rotineiramente</h3><p>Evitar suspensão em cirrose, coinfecção, imunossupressão, transplante ou impossibilidade de seguimento.</p></div>
+</div>
+<div class="card"><h3>✅ Antes de assinar a prescrição</h3>
+<div class="item">☐ HBsAg/cronicidade confirmados</div><div class="item">☐ ALT e HBV-DNA avaliados</div><div class="item">☐ HBeAg/anti-HBe avaliados</div><div class="item">☐ US e estadiamento de fibrose realizados</div><div class="item">☐ Cirrose/Child-Pugh definidos</div><div class="item">☐ HIV, HCV e indicação de HDV avaliados</div><div class="item">☐ História de lamivudina/FTC/PrEP esclarecida</div><div class="item">☐ Rim, osso, gestação e interações considerados</div><div class="item">☐ Rastreio de CHC programado</div><div class="item">☐ Comunicantes, vacinação e notificação orientados</div>
+</div>
+</section>
+</main>
+
+<script>
+(()=>{const A=document.getElementById('app'),q=s=>A.querySelector(s),qa=s=>[...A.querySelectorAll(s)];
+qa('.tab').forEach(b=>b.onclick=()=>{qa('.tab').forEach(x=>x.classList.remove('active'));qa('section').forEach(x=>x.classList.remove('active'));b.classList.add('active');q('#'+b.dataset.tab).classList.add('active')});
+function main(){
+ const sc=q('input[name=scenario]:checked')?.value, severe=q('#acuteSevere')?.checked;
+ q('#acuteBox').style.display=sc==='acute'?'block':'none';q('#chronicBox').style.display=sc==='chronic'?'block':'none';
+ const crit=qa('.criterion:checked');q('#drugBox').style.display=(sc==='chronic'&&crit.length)?'block':'none';
+ let r=q('#mainResult');
+ if(sc==='acute'){r.className='result '+(severe?'treat':'warn');r.innerHTML=severe?'<h3>🚨 SE hepatite B aguda grave → ENTÃO tratar/encaminhar.</h3><p>INR &gt;1,5, icterícia persistente, ascite ou encefalopatia.</p>':'<h3>SE hepatite B aguda sem gravidade → ENTÃO avaliação e seguimento.</h3><p>Não indicar antiviral rotineiramente na forma aguda não grave.</p>';return}
+ if(sc==='preg'){r.className='result warn';r.innerHTML='<h3>🤰 Gestante → abra o módulo Gestante.</h3><p>O decisor específico usa HBV-DNA, HBeAg e indicação materna.</p>';return}
+ if(sc==='immuno'){r.className='result warn';r.innerHTML='<h3>⚠️ Imunossupressão → estratificar risco de reativação.</h3><p>HBsAg + anti-HBc antes da imunossupressão e definir profilaxia/monitorização.</p>';return}
+ if(crit.length){let d=q('input[name=drug]:checked')?.value||'tdf';d=d==='tdf'?'TDF 300 mg 1x/dia':d==='etv'?'ETV 0,5 mg 1x/dia em jejum':'TAF 25 mg 1x/dia com alimento';r.className='result treat';r.innerHTML='<h3>✅ TRATAR</h3><p><b>SE</b> qualquer critério maior estiver presente → <b>ENTÃO tratar.</b></p><p><b>Opção:</b> '+d+'</p><p class="mini">Individualizar por rim, osso, gestação, cirrose e uso prévio de lamivudina/FTC/PrEP.</p>';return}
+ const p=q('input[name=profile]:checked')?.value;r.className='result '+(p==='elevated'?'warn':'');
+ if(p==='inactive')r.innerHTML='<h3>🟢 NÃO tratar neste momento</h3><p><b>SE</b> HBeAg− + HBV-DNA &lt;2.000 + ALT normal → <b>ENTÃO monitorar.</b></p><p class="mini">ALT 6–12 meses; HBsAg/HBV-DNA anual; fibrose 18–36 meses.</p>';
+ else if(p==='border')r.innerHTML='<h3>🟡 ZONA DE MONITORIZAÇÃO</h3><p><b>SE</b> HBV-DNA ≥2.000 com ALT normal/limítrofe → <b>ENTÃO acompanhar estreitamente e estadiar.</b></p>';
+ else if(p==='younghbe')r.innerHTML='<h3>🟡 ACOMPANHAR + ESTADIAR</h3><p><b>SE</b> HBeAg+ + idade &lt;30 + ALT normal → <b>ENTÃO ALT/HBV-DNA seriados e estadiamento.</b></p>';
+ else r.innerHTML='<h3>🟡 NÃO conclua apenas pela ALT.</h3><p><b>SE</b> ALT elevada sem critério → <b>ENTÃO excluir MASLD, álcool, fármacos e coinfecções; repetir.</b></p>';
+}
+function sero(){let a=q('#sHBs')?.value,b=q('#sHBc')?.value,c=q('#sIgM')?.value,d=q('#sHBsAb')?.value;if(!a)return;let t;if(a==='+'&&b==='+'&&c==='+')t='<h3>🔴 Infecção aguda ou flare</h3><p>Correlacionar com clínica e HBV-DNA.</p>';else if(a==='+'&&b==='+'&&c==='-')t='<h3>🟠 Infecção crônica provável</h3><p>Confirmar persistência do HBsAg ≥6 meses e avaliar HBV-DNA.</p>';else if(a==='-'&&b==='+'&&c==='-'&&d==='+')t='<h3>🟢 Infecção passada resolvida</h3>';else if(a==='-'&&b==='-'&&c==='-'&&d==='+')t='<h3>💉 Imunidade vacinal</h3>';else if(a==='-'&&b==='+'&&c==='-'&&d==='-')t='<h3>🟡 Anti-HBc isolado</h3><p>Considerar repetição e HBV-DNA conforme contexto.</p>';else if(a==='-'&&b==='-'&&c==='-'&&d==='-')t='<h3>⚪ Suscetível</h3><p>Indicar vacinação conforme fluxo vigente.</p>';else t='<h3>🔎 Correlacionar o padrão</h3><p>Usar história, HBV-DNA e contexto clínico.</p>';q('#seroResult').innerHTML=t}
+function drug(){let v=q('input[name=drug2]:checked')?.value;if(!v)return;let m={tdf:['TDF 300 mg 1x/dia','Primeira escolha se não houver contraindicação renal/óssea.'],preg:['TDF 300 mg 1x/dia','Preferencial na gestação/amamentação.'],etv:['ETV 0,5 mg 1x/dia em jejum','Ajustar à função renal; evitar gestação.'],taf:['TAF 25 mg 1x/dia com alimento','Opção quando TDF é inadequado e há exposição prévia a lamivudina/FTC/PrEP.'],hiv:['TARV com TDF ou TAF + 3TC/FTC','Tratar HIV/HBV conjuntamente; não suspender atividade anti-HBV abruptamente.']}[v];q('#drugResult').innerHTML='<h3>💊 '+m[0]+'</h3><p>'+m[1]+'</p>'}
+function preg(){let d=q('#gDNA')?.value,h=q('#gHBe')?.value,f=q('#gFib')?.value;if(!d)return;let high=d==='high'||h==='+';q('#pregResult').className='result '+(high||f==='yes'?'treat':'warn');q('#pregResult').innerHTML=high?'<h3>🤰 TDF 300 mg/dia</h3><p><b>SE</b> HBV-DNA ≥200.000 UI/mL ou HBeAg+ → <b>ENTÃO iniciar idealmente a partir da 24ª semana.</b></p>':'<h3>🤰 Sem indicação de profilaxia vertical pelo critério selecionado</h3><p>Manter avaliação da indicação materna e seguimento.</p>'+(f==='yes'?'<p><b>F3/F4 ou indicação materna → tratar independentemente da profilaxia vertical.</b></p>':'')}
+function special(){let v=q('input[name=special]:checked')?.value;if(!v)return;let m={hiv:['HIV/HBV','TARV contendo TDF ou TAF + 3TC/FTC; não retirar atividade anti-HBV abruptamente.'],hcv:['HCV/HBV em DAA','Monitorar ALT e HBV-DNA; avaliar indicação de tratamento do HBV.'],hdv:['Suspeita de HDV','Solicitar anti-HDV e, se reagente, HDV-RNA.'],immuno:['Imunossupressão/QT','HBsAg + anti-HBc antes; definir profilaxia ou monitorização conforme risco.'],dialysis:['Hemodiálise/DRC','Priorizar avaliação renal e estadiamento; individualizar TDF.'],transplant:['Transplante','Antiviral contínuo e estratégia de profilaxia conforme risco/órgão; especialista.']}[v];q('#specialResult').innerHTML='<h3>⚠️ '+m[0]+'</h3><p>'+m[1]+'</p>'}
+qa('input').forEach(x=>x.addEventListener('change',()=>{main();sero();drug();preg();special()}));qa('select').forEach(x=>x.addEventListener('change',()=>{sero();drug();preg()}));main();sero();drug();preg();special();
+})();
+</script>
+</body>
+</html>

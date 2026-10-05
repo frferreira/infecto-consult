@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Infecto Consult — Decisor clínico para avaliação e tratamento antimicrobiano da sepse.">
+<meta name="theme-color" content="#0f766e">
+<title>Infecto Consult — Sepse</title>
+<style>
+:root{
+  --bg:#f4f7f7;--card:#fff;--ink:#172326;--muted:#637276;--line:#dce5e5;
+  --primary:#0f766e;--primary2:#115e59;--soft:#e7f5f3;
+  --danger:#b42318;--dangerbg:#fff0ee;--warn:#a15c00;--warnbg:#fff7e8;
+  --info:#155eef;--infobg:#eef4ff;--success:#087443;--successbg:#ecfdf3;
+  --shadow:0 8px 26px rgba(20,45,48,.07);--radius:16px
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.48}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1120px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;color:var(--primary);letter-spacing:.2px;font-size:20px}.subtitle{font-size:12px;color:var(--muted);font-weight:600}
+main{max-width:1120px;margin:0 auto;padding:22px 16px 60px}
+.hero{background:linear-gradient(135deg,#0f766e,#115e59);color:#fff;border-radius:20px;padding:24px 22px;margin-bottom:16px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 7px;font-size:27px;line-height:1.15}.hero p{margin:0;opacity:.92;font-size:14px}
+.alert{border:1px solid #f3b5ad;background:var(--dangerbg);color:#7a1d14;border-radius:14px;padding:13px 15px;margin:14px 0;font-weight:700}
+.disclaimer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:12px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin:14px 0}
+.card h2{font-size:19px;margin:0 0 13px}.card h3{font-size:15px;margin:18px 0 9px}
+.step{display:flex;gap:12px;padding:15px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:0}.num{min-width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+.step-body{flex:1}.step-title{font-size:18px;font-weight:800;margin:0 0 6px}.help{font-size:12px;color:var(--muted);margin:0 0 10px}
+.choice{display:flex;gap:7px;flex-wrap:wrap}.choice button,.select,.action{
+  border:1px solid #cbd8d8;background:#fff;color:var(--ink);border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer;font-size:13px
+}
+.choice button:hover,.select:hover{border-color:var(--primary)}.choice button.active{background:var(--soft);border-color:var(--primary);color:var(--primary2)}
+.action{background:var(--primary);color:#fff;border-color:var(--primary)}.action:hover{background:var(--primary2)}
+.output{display:none;margin-top:12px;border-radius:14px;padding:14px;border:1px solid var(--line)}
+.output.show{display:block}.output.danger{background:var(--dangerbg);border-color:#f0c0ba}.output.warn{background:var(--warnbg);border-color:#efd5a7}
+.output.info{background:var(--infobg);border-color:#c9d8ff}.output.success{background:var(--successbg);border-color:#b7e4c9}
+.output strong{display:block;margin-bottom:5px}.output p{margin:5px 0;font-size:13px}.output ul{margin:7px 0 4px;padding-left:20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero h1{font-size:23px}}
+.check{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);padding:10px;border-radius:11px;background:#fff;font-size:13px;cursor:pointer}
+.check:hover{border-color:#9dc4c1}.check input{margin-top:3px;accent-color:var(--primary)}
+.check strong{font-weight:800}.badge{display:inline-block;padding:3px 7px;border-radius:999px;font-size:11px;font-weight:800;background:var(--soft);color:var(--primary2)}
+.badge.red{background:#ffe0dc;color:#8b1d14}.badge.amber{background:#fff0cf;color:#805000}.badge.blue{background:#e6efff;color:#1748a0}
+.hidden{display:none!important}.small{font-size:12px;color:var(--muted)}
+.progress{height:7px;background:#e6eeee;border-radius:99px;overflow:hidden;margin-top:8px}.progress>div{height:100%;width:0;background:#14b8a6;transition:.25s}
+.status{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;margin-top:5px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:720px;font-size:12px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{background:#f1f6f6;font-weight:800}tr:last-child td{border-bottom:0}
+.details{border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 13px;margin:8px 0}.details summary{font-weight:800;cursor:pointer;color:var(--primary2)}
+.footer{max-width:1120px;margin:auto;padding:0 16px 40px;color:var(--muted);font-size:12px}
+.sticky{position:sticky;bottom:10px;background:rgba(255,255,255,.95);border:1px solid var(--line);box-shadow:var(--shadow);padding:10px;border-radius:14px;margin-top:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.reset{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:8px 11px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div><div class="brand">Infecto Consult</div><div class="subtitle">Decisor clínico</div></div>
+    <button class="reset" onclick="resetAll()">Reiniciar</button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <h1>Sepse — decisão clínica</h1>
+  <p>Roteiro prático: reconhecer → definir urgência → colher culturas → localizar foco → escolher cobertura → conferir dose → controlar foco → reavaliar → descalonar → definir término.</p>
+</section>
+
+<div class="alert">
+  SEPSE = disfunção orgânica aguda ameaçadora à vida causada por resposta desregulada à infecção. Não aguarde SOFA, qSOFA, cultura ou todos os critérios de choque para agir.
+</div>
+
+<div class="disclaimer">
+  Esta é uma ferramenta de apoio à decisão e não substitui protocolo institucional, avaliação clínica ou atualização normativa.
+</div>
+
+<div class="card">
+  <b>Progresso do atendimento</b>
+  <div class="progress"><div id="progressBar"></div></div>
+  <div class="status"><span id="progressText">0 de 9 etapas</span><span id="progressStatus">início</span></div>
+</div>
+
+<section class="card">
+  <div class="step">
+    <div class="num">1</div>
+    <div class="step-body">
+      <h2 class="step-title">Há suspeita de infecção + disfunção orgânica?</h2>
+      <p class="help">Pergunte pelo início/evolução; sintomas respiratórios, urinários, abdominais, cutâneos e neurológicos; procedimentos/dispositivos; antimicrobianos e internações recentes; culturas/colonização; imunossupressão/neutropenia; viagens/exposições e alergia.</p>
+      <div class="grid">
+        <label class="check"><input type="checkbox" id="s1infection"><span>Infecção provável/possível.</span></label>
+        <label class="check"><input type="checkbox" id="s1organ"><span>Disfunção orgânica: hipotensão, alteração do sensório, hipoxemia, oligúria, má perfusão, lactato elevado ou outra.</span></label>
+      </div>
+      <div class="choice" style="margin-top:10px">
+        <button onclick="step1()">Aplicar decisão</button>
+      </div>
+      <div id="out1" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="step-body">
+      <h2 class="step-title">Qual é a urgência do antimicrobiano?</h2>
+      <p class="help">Escolha o cenário que melhor representa o atendimento atual.</p>
+      <div class="choice" data-group="urgency">
+        <button onclick="urgency('shock',this)">Choque possível/provável/definido</button>
+        <button onclick="urgency('sepsis',this)">Sepse provável/definida, sem choque</button>
+        <button onclick="urgency('possible',this)">Sepse apenas possível, sem choque</button>
+        <button onclick="urgency('low',this)">Baixa probabilidade de infecção, sem choque</button>
+      </div>
+      <div id="out2" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div class="step-body">
+      <h2 class="step-title">Consigo colher culturas sem atrasar o tratamento?</h2>
+      <p class="help">Pelo menos 2 conjuntos de hemoculturas, com frascos aeróbio/anaeróbio, de punções periféricas distintas; colher antes do antimicrobiano quando não causar atraso.</p>
+      <div class="choice">
+        <button onclick="cultures('yes',this)">SIM — coleta rápida</button>
+        <button onclick="cultures('no',this)">NÃO — coleta atrasará o tratamento</button>
+      </div>
+      <div id="out3" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <div class="step-body">
+      <h2 class="step-title">Qual é o foco provável?</h2>
+      <p class="help">Marque uma ou mais pistas. Ao marcar, aparece imediatamente o exame/amostra e a conduta decisiva.</p>
+      <div class="grid">
+        <label class="check"><input type="checkbox" class="focus" value="resp" onchange="focusRun()"> <span><strong>Respiratório</strong><br>Tosse, dispneia, dor pleurítica, consolidação</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="urine" onchange="focusRun()"> <span><strong>Urinário</strong><br>Disúria, urgência, dor lombar</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="abd" onchange="focusRun()"> <span><strong>Abdominal/biliar</strong><br>Dor, defesa, distensão, sinais biliares</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="skin" onchange="focusRun()"> <span><strong>Pele/partes moles</strong><br>Eritema, pus ou necrose</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="catheter" onchange="focusRun()"> <span><strong>Cateter</strong><br>Eritema, secreção ou suspeita de bacteremia relacionada</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="pleural" onchange="focusRun()"> <span><strong>Pleural</strong><br>Derrame com suspeita de infecção</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="cns" onchange="focusRun()"> <span><strong>SNC</strong><br>Sinais meníngeos</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="gi" onchange="focusRun()"> <span><strong>Gastrointestinal</strong><br>Diarreia/vômitos e exposição compatível</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="pd" onchange="focusRun()"> <span><strong>Diálise peritoneal</strong><br>Efluente turvo/dor abdominal</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="genital" onchange="focusRun()"> <span><strong>Genital/prostático</strong><br>Dor pélvica/corrimento uretral</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="joint" onchange="focusRun()"> <span><strong>Articular</strong><br>Articulação dolorosa, quente, limitada</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="bone" onchange="focusRun()"> <span><strong>Ósseo/profundo</strong><br>Dor óssea/foco profundo</span></label>
+        <label class="check"><input type="checkbox" class="focus" value="unknown" onchange="focusRun()"> <span><strong>Sem foco definido</strong><br>Investigação do foco ainda inconclusiva</span></label>
+      </div>
+      <div id="focusOut"></div>
+
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">5</div>
+    <div class="step-body">
+      <h2 class="step-title">Antes de escolher o espectro: quais modificadores estão presentes?</h2>
+      <p class="help">Marque os fatores presentes. A combinação do foco, aquisição, culturas prévias, resistência local, imunossupressão, alergia e modificadores microbiológicos define a cobertura inicial.</p>
+      <div class="grid">
+        <label class="check"><input type="checkbox" class="mod" value="unknown" onchange="therapyRun()"> <span><strong>Foco desconhecido + paciente grave</strong><br>Necessidade de cobertura empírica ampla enquanto o foco é investigado.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="mrsa" onchange="therapyRun()"> <span><strong>MRSA provável/confirmado</strong><br>Risco epidemiológico, culturas prévias ou agente identificado.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="psa" onchange="therapyRun()"> <span><strong>Pseudomonas provável</strong><br>Foco ou contexto com risco de Pseudomonas.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="shockpsa" onchange="therapyRun()"> <span><strong>Choque + alto risco de Pseudomonas resistente</strong><br>Considerar cobertura inicial ampliada conforme resistência prévia/local.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="esblcrit" onchange="therapyRun()"> <span><strong>ESBL invasivo em crítico/hipoalbuminêmico</strong><br>Preferência por carbapenêmico apropriado ao cenário.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="esblnoncrit" onchange="therapyRun()"> <span><strong>ESBL em não crítico, agente sensível, sem risco de Pseudomonas</strong><br>Ertapenem pode ser opção.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="anaerobe" onchange="therapyRun()"> <span><strong>Foco com alto risco de anaeróbios</strong><br>Selecionar esquema com cobertura anaeróbia apropriada.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="neutro" onchange="therapyRun()"> <span><strong>Neutropenia de alto risco</strong><br>Protocolo específico com cobertura antipseudomonas.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="candida" onchange="therapyRun()"> <span><strong>Alto risco + forte suspeita de Candida invasiva</strong><br>Considerar antifúngico empírico dirigido.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="aspergillus" onchange="therapyRun()"> <span><strong>Forte suspeita de Aspergillus</strong><br>Avaliação especializada e terapia específica.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="ricket" onchange="therapyRun()"> <span><strong>Exposição compatível com riquetsiose</strong><br>Doxiciclina quando a suspeita clínica justificar.</span></label>
+        <label class="check"><input type="checkbox" class="mod" value="allergy" onchange="therapyRun()"> <span><strong>Alergia grave a betalactâmicos</strong><br>Rever reação e selecionar alternativa segura.</span></label>
+      </div>
+      <div id="therapyOut" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">6</div>
+    <div class="step-body">
+      <h2 class="step-title">A prescrição está completa e segura?</h2>
+      <p class="help">Dose inicial e manutenção são decisões distintas. Conferir peso, função renal/hepática, TRS, via, intervalo e tempo de infusão.</p>
+      <div class="grid">
+        <label class="check"><input type="checkbox" class="rx" onchange="rxRun()"> <span>Dose inicial EV adequada pela indicação.</span></label>
+        <label class="check"><input type="checkbox" class="rx" onchange="rxRun()"> <span>Manutenção ajustada por função renal/indicação.</span></label>
+        <label class="check"><input type="checkbox" class="rx" onchange="rxRun()"> <span>Via, intervalo e tempo de infusão definidos.</span></label>
+        <label class="check"><input type="checkbox" class="rx" onchange="rxRun()"> <span>Peso atual, obesidade e TRS conferidos.</span></label>
+        <label class="check"><input type="checkbox" class="rx" onchange="rxRun()"> <span>Alergia caracterizada pelo fármaco, manifestação e gravidade.</span></label>
+        <label class="check"><input type="checkbox" class="rx" onchange="rxRun()"> <span>Culturas prévias, antimicrobianos recentes e resistência local revisados.</span></label>
+      </div>
+      <div id="rxOut" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">7</div>
+    <div class="step-body">
+      <h2 class="step-title">Existe foco que exige controle precoce?</h2>
+      <p class="help">Antimicrobiano não substitui drenagem, desbridamento, cirurgia, desobstrução ou retirada de dispositivo/material quando indicados.</p>
+      <div class="grid">
+        <label class="check"><input type="checkbox" class="source" value="abscess" onchange="sourceRun()"> <span>Abscesso/empiema</span></label>
+        <label class="check"><input type="checkbox" class="source" value="urinary" onchange="sourceRun()"> <span>Obstrução urinária infectada</span></label>
+        <label class="check"><input type="checkbox" class="source" value="biliary" onchange="sourceRun()"> <span>Colangite/obstrução biliar</span></label>
+        <label class="check"><input type="checkbox" class="source" value="peritonitis" onchange="sourceRun()"> <span>Peritonite com fistulização persistente</span></label>
+        <label class="check"><input type="checkbox" class="source" value="necrosis" onchange="sourceRun()"> <span>Necrose em partes moles</span></label>
+        <label class="check"><input type="checkbox" class="source" value="joint" onchange="sourceRun()"> <span>Artrite séptica</span></label>
+        <label class="check"><input type="checkbox" class="source" value="catheter" onchange="sourceRun()"> <span>Dispositivo vascular infectado</span></label>
+        <label class="check"><input type="checkbox" class="source" value="prosthesis" onchange="sourceRun()"> <span>Prótese/material infectado ou endocardite complicada</span></label>
+      </div>
+      <div id="sourceOut"></div>
+      <div class="choice" style="margin-top:10px">
+        <button onclick="sourceTiming('yes',this)">SIM — intervenção indicada/planejada</button>
+        <button onclick="sourceTiming('no',this)">NÃO — não há indicação clara agora</button>
+      </div>
+      <div id="sourceTimingOut" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">8</div>
+    <div class="step-body">
+      <h2 class="step-title">Reavalie diariamente: o que aconteceu?</h2>
+      <p class="help">A decisão antimicrobiana muda com evolução, microbiologia, foco e função renal.</p>
+      <div class="choice">
+        <button onclick="daily('better',this)">Melhora + agente/sensibilidade disponíveis</button>
+        <button onclick="daily('negative',this)">Melhora + culturas negativas</button>
+        <button onclick="daily('excluded',this)">Infecção excluída / diagnóstico alternativo convincente</button>
+        <button onclick="daily('worse',this)">Persistência/deterioração</button>
+        <button onclick="daily('renal',this)">Função renal/diálise mudou</button>
+        <button onclick="daily('vanco',this)">Vancomicina em uso</button>
+        <button onclick="daily('cefepime',this)">Cefepima/ertapenem + alteração neurológica</button>
+        <button onclick="daily('linezolid',this)">Linezolida prolongada, especialmente com disfunção renal</button>
+      </div>
+      <div id="dailyOut" class="output"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">9</div>
+    <div class="step-body">
+      <h2 class="step-title">Descalonar e definir o término</h2>
+      <p class="help">Duração é do foco e do agente, não da palavra “sepse”. Preferir o curso mais curto adequado quando o controle de foco foi obtido e a resposta é satisfatória.</p>
+      <div class="choice">
+        <button onclick="finish('stop',this)">Infecção excluída</button>
+        <button onclick="finish('deesc',this)">Agente/foco definidos → retirar coberturas desnecessárias</button>
+        <button onclick="finish('continue',this)">Tratamento ainda indicado</button>
+      </div>
+      <div id="finishOut" class="output"></div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Ressuscitação e choque — quando aplicável</h2>
+  <div class="grid">
+    <div class="output show danger">
+      <strong>Hipoperfusão/choque</strong>
+      Cristaloide IV ≥30 mL/kg nas primeiras 3 h, com reavaliação frequente e preferência por medidas dinâmicas para novos bolus.
+    </div>
+    <div class="output show info">
+      <strong>Hipotensão persistente</strong>
+      Norepinefrina é o vasopressor de primeira linha; não atrasar vasopressor para obter acesso central quando a via periférica é adequada e monitorada. Meta inicial de PAM ~65 mmHg.
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Referência rápida de doses do material-base</h2>
+  <p class="small">Doses de referência para adultos; não constituem prescrição automática. Confirmar indicação, função renal, sensibilidade e ajustes. Os ajustes por clearance são de manutenção e não substituem a avaliação da dose inicial. Não extrapolar doses de HD para outras modalidades de TRS.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Fármaco / indicação</th><th>Dose de referência</th><th>Ajustes/particularidades decisivas</th></tr></thead>
+    <tbody>
+      <tr><td>Cefepima — infecção grave</td><td>2 g 8/8 h com ClCr &gt;60</td><td>30–60: 2 g 12/12; 10–29: 2 g 24/24; &lt;10: 1 g 24/24; HD: 2 g agora e após HD.</td></tr>
+      <tr><td>Ceftolozana-tazobactam — pneumonia/infecção grave</td><td>3 g 8/8 h em 3 h, ClCr &gt;50</td><td>30–50: 1,5 g 8/8; 15–29: 750 mg 8/8; HD: 2,25 g inicial, depois 450 mg 8/8, em 3 h.</td></tr>
+      <tr><td>Ceftriaxona</td><td>2 g 24/24; meningite 2 g 12/12</td><td>Disfunção renal isolada: sem ajuste renal; não cobre Pseudomonas.</td></tr>
+      <tr><td>Daptomicina</td><td>6–10 mg/kg 24/24</td><td>&lt;30: 8–10 mg/kg 48/48; HD: 8–10 mg/kg agora e após HD. Não usar para pneumonia.</td></tr>
+      <tr><td>Doxiciclina</td><td>100 mg 12/12 EV ou VO</td><td>Opção para riquetsiose quando a suspeita clínica justificar.</td></tr>
+      <tr><td>Ertapenem</td><td>1 g 24/24 com ClCr &gt;30</td><td>&lt;30: 500 mg 24/24; HD: 500 mg agora e depois 24/24. Não cobre Pseudomonas; evitar como primeira opção em ESBL crítico/hipoalbuminêmico.</td></tr>
+      <tr><td>Linezolida</td><td>600 mg 12/12</td><td>Sem redução renal inicial rotineira; acompanhar hemograma/plaquetas e interações; não é substituto automático em bacteremia/endocardite.</td></tr>
+      <tr><td>Meropenem — padrão</td><td>1 g 8/8</td><td>&gt;50: 1 g 8/8; 26–50: 1 g 12/12; 10–25: 500 mg 12/12; &lt;10: 500 mg 24/24; HD: 500 mg agora e depois 24/24.</td></tr>
+      <tr><td>Metronidazol — padrão</td><td>500 mg 8/8</td><td>&lt;10: 500 mg 12/12; HD: 500 mg 8/8. Não usar regime genérico para C. difficile.</td></tr>
+      <tr><td>Piperacilina-tazobactam — Pseudomonas, curta</td><td>4,5 g 6/6 se ClCr &gt;20</td><td>&lt;20: 3,375 g 8/8; HD: 2,25 g 8/8 em 30 min.</td></tr>
+      <tr><td>Piperacilina-tazobactam — prolongada</td><td>4,5 g inicial em 30 min; depois 4,5 g 8/8 em 4 h se ClCr &gt;20</td><td>&lt;20: usar infusão curta; HD: 2,25 g 8/8 em 30 min.</td></tr>
+      <tr><td>Vancomicina</td><td>Ataque 25–30 mg/kg; obesidade 20–25 mg/kg; máximo 3 g</td><td>Manutenção individualizada por exposição, função renal e concentrações. AUC24 400–600 mg·h/L para MRSA invasivo; avaliar em 24–48 h.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Checklist final da prescrição e avaliação</h2>
+  <div class="grid">
+    <label class="check"><input type="checkbox"><span>Urgência definida; horário do reconhecimento e da primeira dose registrados.</span></label>
+    <label class="check"><input type="checkbox"><span>Foco provável e necessidade de intervenção registrados.</span></label>
+    <label class="check"><input type="checkbox"><span>Hemoculturas e amostras representativas colhidas sem atraso indevido.</span></label>
+    <label class="check"><input type="checkbox"><span>Alergia caracterizada; culturas prévias, antimicrobianos recentes e resistência local revistos.</span></label>
+    <label class="check"><input type="checkbox"><span>Cobertura MRSA/Pseudomonas/ESBL/anaeróbios/fungos justificada, não automática.</span></label>
+    <label class="check"><input type="checkbox"><span>Dose inicial e manutenção diferenciadas; via, intervalo e tempo de infusão prescritos.</span></label>
+    <label class="check"><input type="checkbox"><span>Peso, função renal/hepática e modalidade/parâmetros da TRS conferidos.</span></label>
+    <label class="check"><input type="checkbox"><span>Monitoramento de exposição/toxicidade planejado quando indicado.</span></label>
+    <label class="check"><input type="checkbox"><span>Descalonamento e duração revistos diariamente; data/critério de término definidos pelo foco.</span></label>
+  </div>
+</section>
+
+
+
+<div class="sticky">
+  <span class="small"><b>Infecto Consult</b> • Sepse — sequência completa de atendimento</span>
+  <button class="reset" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Início</button>
+</div>
+</main>
+
+<footer class="footer">
+  Referências principais do material-base: Sepsis-3 (JAMA 2016); Surviving Sepsis Campaign 2026; UpToDate 2026; IDSA 2026 AMR Guidance; consenso de monitoramento de vancomicina 2020; referências de dose UCSF.
+  <br><br>
+  Esta é uma ferramenta de apoio à decisão e não substitui protocolo institucional, avaliação clínica ou atualização normativa.
+</footer>
+
+<script>
+const focusData={
+ resp:["Imagem torácica; amostra respiratória representativa; testes virais e antígenos conforme suspeita.","Classificar pneumonia comunitária/hospitalar; avaliar empiema; adequar cobertura."],
+ urine:["Urina e urocultura; imagem quando suspeita de obstrução/coleção.","Obstrução com infecção exige descompressão; avaliar troca/retirada de dispositivo infectado."],
+ abd:["US/TC; cultura aeróbia/anaeróbia de coleção drenada.","Drenagem, descompressão biliar ou correção de contaminação quando indicadas."],
+ skin:["Inspeção completa; Gram/cultura de pus ou material representativo.","Coleção → drenagem; tecido necrótico → avaliação cirúrgica/desbridamento."],
+ catheter:["Hemoculturas de cateter + periférica.","Avaliar retirada; garantir acesso alternativo quando necessário."],
+ pleural:["Cultura de líquido pleural.","Avaliar drenagem."],
+ cns:["Líquor com células, proteína, glicose, Gram/cultura e testes adicionais conforme indicação; verificar segurança do procedimento.","Protocolo específico de meningite; não atrasar tratamento por investigação."],
+ gi:["Teste para C. difficile ou investigação de patógenos entéricos conforme quadro.","Tratamento específico; não aplicar esquema abdominal genérico a colite por C. difficile."],
+ pd:["Contagem celular e cultura do efluente.","Avaliação específica de peritonite relacionada à diálise."],
+ genital:["Amostras de secreção genital/urina dirigidas.","Investigar foco genital/prostático e adequar tratamento."],
+ joint:["Artrocentese: células, Gram e cultura.","Avaliar drenagem/desbridamento."],
+ bone:["Hemoculturas, RM e amostra óssea quando indicada.","Protocolo de osteomielite; duração e controle próprios."],
+ unknown:["Revisar história, exame, dispositivos, culturas prévias e exames dirigidos; imagem conforme suspeita.","Não manter amplo espectro indefinidamente sem reavaliar o diagnóstico e procurar foco oculto."]
+};
+
+const therapyData={
+ unknown:["Betalactâmico de amplo espectro, como piperacilina-tazobactam ou meropenem; acrescentar cobertura MRSA quando risco/choque justificar.","Não usar o mesmo esquema para todos; não usar carbapenêmico sem avaliar resistência."],
+ mrsa:["Vancomicina com monitoramento de exposição; alternativa conforme foco e contraindicações.","Não usar daptomicina para pneumonia; não substituir automaticamente agentes em qualquer foco."],
+ psa:["Cefepima, piperacilina-tazobactam ou meropenem, orientados por resistência local/prévia.","Ertapenem não cobre Pseudomonas."],
+ shockpsa:["Considerar inicialmente segundo agente de outra classe com atividade provável; revisar após sensibilidade.","Não manter dupla cobertura de gram-negativos sem necessidade."],
+ esblcrit:["Preferir meropenem ou imipenem-cilastatina conforme sensibilidade.","Ertapenem como escolha inicial indiferenciada no crítico."],
+ esblnoncrit:["Ertapenem pode ser opção; considerar foco e ausência de risco de Pseudomonas.","Confundir ESBL com toda resistência a carbapenêmicos."],
+ anaerobe:["Piperacilina-tazobactam/carbapenêmico ou ceftriaxona + metronidazol quando adequado ao cenário.","Cobertura anaeróbia indiscriminada; adicionar metronidazol sem avaliar sobreposição."],
+ neutro:["Protocolo específico com cobertura antipseudomonas e avaliação especializada.","Tratar como sepse comunitária sem modificadores."],
+ candida:["Avaliar equinocandina e investigação dirigida.","Antifúngico empírico rotineiro no não neutropênico sem indicação."],
+ aspergillus:["Avaliação especializada e terapia específica, como voriconazol.","Equinocandina como substituto genérico de tratamento de aspergilose."],
+ ricket:["Doxiciclina quando a suspeita clínica justificar.","Esperar confirmação em quadro compatível."],
+ allergy:["Rever tipo de reação e opções seguras; aztreonam pode ser opção para gram-negativos conforme sensibilidade e composição do esquema.","Tratar aztreonam isolado como cobertura universal de sepse."]
+};
+
+const sourceData={
+ abscess:"Abscesso/empiema → organizar drenagem e colher material representativo.",
+ urinary:"Obstrução urinária infectada → desobstrução e avaliação de drenagem de coleção.",
+ biliary:"Colangite/obstrução biliar → desobstrução da via biliar.",
+ peritonitis:"Peritonite com fistulização persistente → correção/reparo/desvio da origem; drenagem e desbridamento quando indicados.",
+ necrosis:"Necrose em partes moles → avaliação cirúrgica urgente; desbridamento conforme diagnóstico.",
+ joint:"Artrite séptica → drenagem/desbridamento conforme avaliação.",
+ catheter:"Dispositivo vascular infectado → avaliar retirada depois de garantir acesso alternativo.",
+ prosthesis:"Prótese/material infectado ou endocardite complicada → avaliação especializada para retirada/intervenção; não presumir cirurgia para todos."
+};
+
+let completed=new Set();
+function mark(n){completed.add(n);updateProgress()}
+function updateProgress(){
+  const p=Math.round(completed.size/9*100);
+  document.getElementById("progressBar").style.width=p+"%";
+  document.getElementById("progressText").textContent=completed.size+" de 9 etapas";
+  document.getElementById("progressStatus").textContent=completed.size===9?"atendimento concluído":"em andamento";
+}
+function setActive(btn){
+  const group=btn.parentElement.querySelectorAll("button");
+  group.forEach(x=>x.classList.remove("active"));btn.classList.add("active");
+}
+function out(id,cls,title,body){
+  const e=document.getElementById(id);e.className="output show "+cls;
+  e.innerHTML="<strong>"+title+"</strong>"+body;
+}
+function step1(){
+  mark(1);
+  const inf=document.getElementById("s1infection").checked,org=document.getElementById("s1organ").checked;
+  if(inf&&org) out("out1","danger","→ Trate como suspeita de sepse", "<p>Reconheça gravidade e siga imediatamente para urgência do antimicrobiano, culturas e busca do foco. Não aguarde SOFA/qSOFA completo.</p>");
+  else if(inf) out("out1","warn","→ Infecção possível, mas disfunção orgânica não documentada", "<p>Continue avaliação dinâmica e procure sinais de disfunção orgânica. A decisão deve integrar história, exame, exames e foco.</p>");
+  else out("out1","info","→ Sepse ainda não sustentada", "<p>Reavalie diagnóstico e causas alternativas; se a probabilidade de infecção for baixa e não houver choque, o antimicrobiano pode ser postergado com vigilância.</p>");
+}
+function urgency(type,btn){
+  mark(2);setActive(btn);
+  const map={
+   shock:["danger","ANTIMICROBIANO IMEDIATO — idealmente ≤1 h","<p>Hemoculturas sem atraso; busca de foco em paralelo; atendimento de urgência/UTI.</p>"],
+   sepsis:["danger","ANTIMICROBIANO IMEDIATO — idealmente ≤1 h","<p>Colher amostras acessíveis e iniciar esquema adequado ao foco.</p>"],
+   possible:["warn","INVESTIGAÇÃO RÁPIDA E LIMITADA NO TEMPO","<p>Se a preocupação infecciosa persistir, tratar até 3 h da suspeita.</p>"],
+   low:["success","PODE POSTERGAR INICIALMENTE","<p>Vigilância próxima; investigar alternativas e reavaliar imediatamente se deteriorar.</p>"]
+  };
+  const x=map[type];out("out2",x[0],"→ "+x[1],x[2]);
+}
+function cultures(type,btn){
+  mark(3);setActive(btn);
+  if(type==="yes") out("out3","success","→ COLHER AGORA","<p>Pelo menos 2 conjuntos de hemoculturas, aeróbio/anaeróbio, de punções periféricas distintas. Colher antes do antimicrobiano quando não causar atraso. Acrescentar amostras representativas do foco.</p>");
+  else out("out3","danger","→ NÃO ATRASE O ANTIMICROBIANO","<p>Colha o possível em paralelo. Cultura negativa não exclui sepse.</p>");
+}
+function focusRun(){
+  mark(4);
+  const selected=[...document.querySelectorAll(".focus:checked")].map(x=>x.value);
+  const box=document.getElementById("focusOut");
+  if(!selected.length){box.className="output";box.innerHTML="";return}
+  box.className="output show info";
+  box.innerHTML=selected.map(k=>{
+    const d=focusData[k];
+    return "<div style='margin-bottom:10px'><span class='badge'>"+labelFocus(k)+"</span><p><b>Solicitar/avaliar:</b> "+d[0]+"</p><p><b>Conduta decisiva:</b> "+d[1]+"</p></div>"
+  }).join("");
+}
+function labelFocus(k){
+  return {resp:"Respiratório",urine:"Urinário",abd:"Abdominal/biliar",skin:"Pele/partes moles",catheter:"Cateter",pleural:"Pleural",cns:"SNC",gi:"Gastrointestinal",pd:"Diálise peritoneal",genital:"Genital/prostático",joint:"Articular",bone:"Ósseo/profundo"}[k];
+}
+function therapyRun(){
+  mark(5);
+  const selected=[...document.querySelectorAll(".mod:checked")].map(x=>x.value);
+  const box=document.getElementById("therapyOut");
+  if(!selected.length){box.className="output";box.innerHTML="";return}
+  const actions=selected.map(k=>{
+    const d=therapyData[k];
+    return "<div style='margin-bottom:9px'><b>"+labelTherapy(k)+"</b><p><b>→ Escolha/ação:</b> "+d[0]+"</p><p><b>Evitar:</b> "+d[1]+"</p></div>";
+  }).join("");
+
+  const doseMap={
+    unknown:["Betalactâmico de amplo espectro","Piperacilina-tazobactam ou meropenem, conforme foco, aquisição e resistência; acrescentar cobertura anti-MRSA quando houver indicação."],
+    mrsa:["Vancomicina","Ataque 25–30 mg/kg de peso atual; em obesidade 20–25 mg/kg; máximo 3 g. Manutenção individualizada por exposição e função renal. Para MRSA invasivo, alvo AUC24 400–600 mg·h/L; avaliar em 24–48 h."],
+    psa:["Cobertura antipseudomonas","Cefepima 2 g EV 8/8 h se ClCr >60; piperacilina-tazobactam 4,5 g EV 6/6 h se ClCr >20; ou meropenem 1 g EV 8/8 h com função renal preservada. Ajustar manutenção conforme função renal."],
+    shockpsa:["Cobertura ampliada para Pseudomonas resistente","Considerar inicialmente segundo agente de outra classe com atividade provável; revisar após sensibilidade. Não manter dupla cobertura sem necessidade."],
+    esblcrit:["Meropenem","1 g EV 8/8 h com função renal preservada; 26–50: 1 g 12/12; 10–25: 500 mg 12/12; <10: 500 mg 24/24; HD: 500 mg agora e depois 24/24."],
+    esblnoncrit:["Ertapenem","1 g EV 24/24 h se ClCr >30; <30: 500 mg 24/24; HD: 500 mg agora e depois 24/24. Não cobre Pseudomonas."],
+    anaerobe:["Cobertura anaeróbia","Piperacilina-tazobactam/carbapenêmico ou ceftriaxona + metronidazol quando adequado ao cenário. Metronidazol intra-abdominal (exceto C. difficile): 500 mg 12/12 h."],
+    neutro:["Cobertura antipseudomonas","Cefepima é uma opção de referência: 2 g EV 8/8 h se ClCr >60; ajustar manutenção conforme função renal. Seguir protocolo específico de neutropenia de alto risco."],
+    candida:["Antifúngico dirigido","Avaliar equinocandina e investigação dirigida; o material não estabelece aqui uma dose única universal para todos os cenários."],
+    aspergillus:["Terapia específica para Aspergillus","Avaliação especializada e terapia específica, como voriconazol; dose conforme protocolo e cenário clínico."],
+    ricket:["Doxiciclina","100 mg EV/VO 12/12 h quando apropriado e quando a suspeita clínica justificar."],
+    allergy:["Alternativa em alergia grave a betalactâmicos","Rever tipo de reação e opções seguras; aztreonam pode ser opção para gram-negativos conforme sensibilidade e composição do esquema. Não usar como cobertura universal." ]
+  };
+  const selectedDoses=selected.map(k=>doseMap[k]).filter(Boolean);
+  const scheme=selectedDoses.map(d=>"<div style='margin:9px 0;padding:10px;border:1px solid #dce5e5;border-radius:10px;background:#fff'><span class='badge'>"+d[0]+"</span><p><b>Dose/esquema de referência:</b> "+d[1]+"</p></div>").join("");
+  box.className="output show warn";
+  box.innerHTML="<strong>MODIFICADORES SELECIONADOS</strong>"+actions+
+    "<hr style='border:0;border-top:1px solid #dce5e5;margin:13px 0'>"+
+    "<strong>→ ESQUEMA / DOSE DE REFERÊNCIA</strong>"+
+    (scheme||"<p>O modificador selecionado não define sozinho um esquema/dose universal. Completar a decisão pelo foco, microbiologia e protocolo específico.</p>")+
+    "<p class='small'><b>Nota:</b> as doses são referências para adultos. A dose inicial e a manutenção são decisões distintas; ajustar a manutenção conforme função renal e modalidade de terapia renal substitutiva quando aplicável.</p>";
+}
+function labelTherapy(k){
+  return {unknown:"Foco desconhecido + grave",mrsa:"MRSA",psa:"Pseudomonas",shockpsa:"Choque + Pseudomonas resistente",esblcrit:"ESBL + crítico/hipoalbuminêmico",esblnoncrit:"ESBL + não crítico",anaerobe:"Alto risco de anaeróbios",neutro:"Neutropenia de alto risco",candida:"Candida invasiva",aspergillus:"Aspergillus",ricket:"Riquetsiose",allergy:"Alergia grave a betalactâmicos"}[k];
+}
+function rxRun(){
+  const n=document.querySelectorAll(".rx:checked").length;
+  if(n===6){mark(6);out("rxOut","success","→ PRESCRIÇÃO CONFERIDA","<p>Dose inicial, manutenção, via, intervalo, infusão, peso, alergia, função renal/hepática, TRS e microbiologia foram conferidos.</p>")}
+  else {const e=document.getElementById("rxOut");e.className="output show info";e.innerHTML="<strong>→ Faltam "+(6-n)+" itens</strong><p>Complete a conferência antes de considerar a prescrição segura.</p>"}
+}
+function sourceRun(){
+  mark(7);
+  const selected=[...document.querySelectorAll(".source:checked")].map(x=>x.value);
+  const box=document.getElementById("sourceOut");
+  if(!selected.length){box.className="output";box.innerHTML="";return}
+  box.className="output show danger";
+  const labels={
+    abscess:"Abscesso/empiema", urinary:"Obstrução urinária infectada", biliary:"Colangite/obstrução biliar",
+    peritonitis:"Peritonite com fistulização persistente", necrosis:"Necrose em partes moles",
+    joint:"Artrite séptica", catheter:"Dispositivo vascular infectado", prosthesis:"Prótese/material infectado ou endocardite complicada"
+  };
+  box.innerHTML="<strong>→ CONTROLE DE FOCO NECESSÁRIO</strong><ul>"+
+    selected.map(k=>"<li><b>"+labels[k]+"</b> — "+sourceData[k]+"</li>").join("")+
+    "</ul><p>Organizar controle de foco precoce, idealmente em até 6 h, quando clinicamente indicado e seguro. Documentar qual intervenção, equipe responsável e prazo.</p>";
+}
+function sourceTiming(type,btn){
+  mark(7);setActive(btn);
+  if(type==="yes") out("sourceTimingOut","danger","→ INTERVENÇÃO PRIORITÁRIA","<p>Organize o controle de foco o mais cedo possível, frequentemente dentro de 6 h quando seguro e logisticamente viável.</p>");
+  else out("sourceTimingOut","info","→ CONTINUE A BUSCA","<p>Se a infecção persistir, revisar obstrução, coleção, necrose, contaminação contínua e material infectado.</p>");
+}
+function daily(type,btn){
+  mark(8);setActive(btn);
+  const map={
+   better:["success","→ DIRECIONAR/DESCALONAR","<p>Direcionar para agente e foco; retirar coberturas desnecessárias; ajustar dose e definir término.</p>"],
+   negative:["warn","→ CULTURA NEGATIVA NÃO ENCERRA A DECISÃO","<p>Reavaliar diagnóstico e foco; considerar descalonamento pela evolução e probabilidade clínica. Não manter amplo espectro apenas pela ausência de agente.</p>"],
+   excluded:["success","→ SUSPENDER QUANDO APROPRIADO","<p>Se infecção excluída e houver diagnóstico alternativo convincente, suspender antimicrobiano quando apropriado.</p>"],
+   worse:["danger","→ INVESTIGAR FALHA","<p>Rever foco, resistência, atividade do esquema, dose/infusão, penetração, coleta e complicações; buscar nova infecção quando pertinente.</p>"],
+   renal:["warn","→ REAJUSTAR HOJE","<p>Reavaliar dose e intervalo no mesmo dia; antecipar monitoramento quando necessário.</p>"],
+   vanco:["info","→ MONITORAR VANCOMICINA","<p>AUC24 400–600 mg·h/L para MRSA invasivo; avaliar precocemente, função renal e nefrotoxicidade. Em HD, usar monitoramento específico.</p>"],
+   cefepime:["danger","→ REVER ACUMULAÇÃO/NEUROTOXICIDADE","<p>Rever depuração, exposição/acumulação e outras causas antes de manter a dose.</p>"],
+   linezolid:["warn","→ MONITORAR HEMOGRAMA/PLAQUETAS","<p>Em uso prolongado, especialmente com disfunção renal, acompanhar hemograma/plaquetas; avaliar dose/exposição e alternativas.</p>"]
+  };
+  const x=map[type];out("dailyOut",x[0],x[1],x[2]);
+}
+function finish(type,btn){
+  mark(9);setActive(btn);
+  if(type==="stop") out("finishOut","success","→ SUSPENDER QUANDO APROPRIADO","<p>Se a infecção foi excluída, documentar diagnóstico alternativo e motivo da suspensão.</p>");
+  if(type==="deesc") out("finishOut","success","→ DESCALONAR","<p>Retirar coberturas sem indicação persistente e direcionar pelo agente, foco e sensibilidade. Ajustar dose e definir término.</p>");
+  if(type==="continue") out("finishOut","info","→ DEFINIR DURAÇÃO PELO FOCO E AGENTE","<p>Bacteremia por <i>S. aureus</i>, endocardite, osteomielite, abscesso não drenado, infecção fúngica profunda, neutropenia e outras situações especiais exigem avaliação própria. Registrar duração planejada, marco inicial e critérios de término.</p>");
+}
+
+function resetAll(){
+  document.querySelectorAll("input[type=checkbox], input[type=radio]").forEach(x=>x.checked=false);
+  document.querySelectorAll(".output").forEach(x=>{x.className="output";x.innerHTML=""});
+  document.querySelectorAll(".choice button").forEach(x=>x.classList.remove("active"));
+  completed=new Set();updateProgress();window.scrollTo({top:0,behavior:"smooth"});
+}
+updateProgress();
+</script>
+</body>
+</html>
